@@ -42,3 +42,8 @@ group :development do
   gem 'coffee-rails-source-maps'
 end
 
+group :production do
+  gem 'rails_12factor'  
+end
+
+
