@@ -2,7 +2,6 @@ $(document).ready(function(){
   StartupAssist.showAllCanvas();
 });
 
-
 var StartupAssist = StartupAssist || {};
 
 StartupAssist.showAllCanvas = function(){
