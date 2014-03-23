@@ -12,6 +12,8 @@ gem 'jbuilder', '~> 1.2'
 gem 'bootstrap-sass', '~> 3.1.0'
 gem 'devise'
 gem 'httparty'
+gem 'd3_rails'
+
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

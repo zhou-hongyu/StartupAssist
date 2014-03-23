@@ -59,6 +59,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
+    d3_rails (3.4.3)
+      railties (>= 3.1.0)
     database_cleaner (1.2.0)
     debug_inspector (0.0.2)
     devise (3.2.4)
@@ -245,6 +247,7 @@ DEPENDENCIES
   capybara
   coffee-rails (~> 4.0.0)
   coffee-rails-source-maps
+  d3_rails
   database_cleaner
   devise
   dotenv-rails
