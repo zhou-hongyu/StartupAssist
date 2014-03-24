@@ -39,6 +39,13 @@ StartupAssist.drawPanel = function(){
 };
 
 
+var selectElement = 0,
+    currentX = 0,
+    currentY = 0,
+    currentTranslate = 0,
+    i = 0;
+
+
 StartupAssist.drawTags = function(){
   var tag_width = 100,
       tag_height = 80;
@@ -53,51 +60,70 @@ StartupAssist.drawTags = function(){
            .attr('y', 10)
            .attr('height', tag_height)
            .attr('width', tag_width)
-           .attr('transform', 'matrix(1 0 0 1 1000 350)')
-           .attr('onmousedown', 'StartupAssist.selectElement(evt)')
+           .attr('transform', 'translate(1000, 350)')
+           .attr('onmousedown', 'StartupAssist.selectElement(event)')
            .style('fill', '#f1c40f');
 
 };
 
-var selectElement = 0,
-    currentX = 0,
-    currentY = 0,
-    currentMatrix = 0,
-    i = 0;
 
-StartupAssist.selectElement = function(evt){
+StartupAssist.selectElement = function(event){
+  selectElement = event.target;
+  currentX = event.clientX;
+  currentY = event.clientY;
+  currentTranslate = selectElement.getAttributeNS(null, "transform").slice(10, -1).split(', ');
 
-  selectElement = evt.target;
-  currentX = evt.clientX;
-  currentY = evt.clientY;
-  currentMatrix = selectElement.getAttributeNS(null, "transform").slice(7, -1).split(' ');
-  for(i; i < currentMatrix.length; i++ ){
-    currentMatrix[i] = parseFloat(currentMatrix[i]);
+  for(i; i < currentTranslate.length; i++ ){
+    currentTranslate[i] = parseFloat(currentTranslate[i]);
   }
-  selectElement.setAttributeNS(null, "onmousemove", "StartupAssist.moveElement(evt)");
-  selectElement.setAttributeNS(null, "onmouseout", "StartupAssist.deselectElement(evt)");
-  selectElement.setAttributeNS(null, "onmouseup", "StartupAssist.deselectElement(evt)");
+
+  selectElement.addEventListener('mousemove', StartupAssist.moveElement);
+  selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler); 
+  //selectElement.addEventListener('mouseout', StartupAssist.mouseOutHandler);
+  selectElement.removeEventListener('mousedown', StartupAssist.selectElement);
+  event.preventDefault();
+  return false;
 };
 
-StartupAssist.moveElement = function(evt) {
-  dx = evt.clientX - currentX;
-  dy = evt.clientY - currentY;
-  currentMatrix[4] += dx;
-  currentMatrix[5] += dy;
-  newMatrix = "matrix(" + currentMatrix.join(' ') + ")";
+StartupAssist.moveElement = function(event) {
+  //console.log("moveElement: clientX = " + event.clientX);
+  //console.log("moveElement: clientX = " + event.clientY);
+  dx = event.clientX - currentX;
+  dy = event.clientY - currentY;
 
-  selectElement.setAttributeNS(null, "transform", newMatrix);
-  currentX = evt.clientX;
-  currentY = evt.clientY;
+  currentTranslate[0] = parseInt(currentTranslate[0]) + parseInt(dx);
+  currentTranslate[1] = parseInt(currentTranslate[1]) + parseInt(dy);
+
+
+  newTranslate = "translate(" + currentTranslate.join(', ') + ")";
+  event.target.setAttributeNS(null, "transform", newTranslate);
+  currentX = event.clientX;
+  currentY = event.clientY;
+    event.preventDefault();
+    return false;
+
 };
 
-StartupAssist.deselectElement = function(evt) {
+StartupAssist.mouseOutHandler = function(event) {
+
   if( selectElement !== 0 ){
-    selectElement.removeAttributeNS(null, "onmousemove");
-    selectElement.removeAttributeNS(null, "onmouseout");
-    selectElement.removeAttributeNS(null, "onmouseup");
-    selectElement = 0;
+    //selectElement = 0;
+    event.target.removeEventListener('mousemove', StartupAssist.moveElement);
+    event.target.addEventListener('mousedown', StartupAssist.selectElement);
   }
+    event.preventDefault();
+    return false;
+};
+
+StartupAssist.mouseUpHandler = function(event) {
+  if( selectElement !== 0 ){
+    // selectElement = 0;
+    event.target.removeEventListener('mousemove', StartupAssist.moveElement);
+    event.target.addEventListener('mousedown', StartupAssist.selectElement);
+  }
+
+    event.preventDefault();
+    return false;
 };
 
 StartupAssist.changeColor = function(d){

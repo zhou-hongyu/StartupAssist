@@ -138,7 +138,7 @@ StartupAssist.drawCanva = function(){
        .attr('class', 'category')
        .append('text')
        .text('Value')
-       .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 2) + ', ' + (y_offset + frame_offset) + ')');
+       .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 2) + ', ' + (y_offset + frame_offset) + ')')
 
   canva.append('g')
        .attr('class', 'category')
