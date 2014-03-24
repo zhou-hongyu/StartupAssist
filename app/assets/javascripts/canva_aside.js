@@ -1,7 +1,7 @@
 var StartupAssist = StartupAssist || {};
 
 StartupAssist.drawPanel = function(){
-  var color_panel = d3.select('#color-panel-svg'),
+  var color_panel = d3.select('#canva-svg'),
       width = 220,
       height = 300,
       outerRadius = Math.min(width, height) * 0.45;
@@ -30,7 +30,7 @@ StartupAssist.drawPanel = function(){
         .style("fill", function(d) { return fill(d.index); })
         .style("stroke", function(d) { return fill(d.index); })
         .attr("d", d3.svg.arc().outerRadius(outerRadius))
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+        .attr("transform", "translate(" + (960 + width / 2) + ", " + height / 2 + ")")
         .on("click", function(d) {
           return StartupAssist.changeColor(d.index);
         });
@@ -40,17 +40,20 @@ StartupAssist.drawPanel = function(){
 
 
 StartupAssist.drawTags = function(){
+  var tag_width = 100,
+      tag_height = 80;
+
   console.log("success");
-  tag_svg = d3.select('#tag-svg');
+  tag_svg = d3.select('#canva-svg');
   tag_svg.append("g")
          .attr('class', 'new-tag')
          .append("rect")
            .attr('class', 'draggable')
            .attr("x", 20)
            .attr('y', 10)
-           .attr('height', 160)
-           .attr('width', 180)
-           .attr('transform', 'matrix(1 0 0 1 0 0)')
+           .attr('height', tag_height)
+           .attr('width', tag_width)
+           .attr('transform', 'matrix(1 0 0 1 1000 350)')
            .attr('onmousedown', 'StartupAssist.selectElement(evt)')
            .style('fill', '#f1c40f');
 
@@ -72,7 +75,8 @@ StartupAssist.selectElement = function(evt){
     currentMatrix[i] = parseFloat(currentMatrix[i]);
   }
   selectElement.setAttributeNS(null, "onmousemove", "StartupAssist.moveElement(evt)");
-
+  selectElement.setAttributeNS(null, "onmouseout", "StartupAssist.deselectElement(evt)");
+  selectElement.setAttributeNS(null, "onmouseup", "StartupAssist.deselectElement(evt)");
 };
 
 StartupAssist.moveElement = function(evt) {
@@ -97,7 +101,7 @@ StartupAssist.deselectElement = function(evt) {
 };
 
 StartupAssist.changeColor = function(d){
-  var tag_svg = d3.select('#tag-svg'),
+  var tag_svg = d3.select('#canva-svg'),
       color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
   tag_svg.selectAll(".new-tag rect")
          .transition()
