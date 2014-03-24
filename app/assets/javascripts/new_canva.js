@@ -9,10 +9,12 @@ StartupAssist.newCanva = function(){
       $save_canva_div = $('<div id="save-canva">'),
       $save_canva_button = $('<button class="btn btn-primary btn-lg">Save Canva</button>'),
       $canva_svg = $('<svg id="canva-svg" width="900" height="500">'),
-      $color_panel_svg = $('<svg id="color-panel-svg" width="220" height="300">');
+      $color_panel_svg = $('<svg id="color-panel-svg" width="220" height="300">'),
+      $tags_svg = $('<svg id ="tag-svg" width="200" height="200">');
 
   $content_div.text("");
   $color_panel_div.append($color_panel_svg);
+  $new_tags_div.append($tags_svg);
   $tag_tool.append($color_panel_div, $new_tags_div);
   $new_canva_div.append($canva_svg,$tag_tool);
   $save_canva_div.append($save_canva_button);

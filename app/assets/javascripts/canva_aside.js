@@ -38,5 +38,14 @@ StartupAssist.drawPanel = function(){
 
 StartupAssist.drawTags = function(){
   console.log("success");
-  
+  tag_svg = d3.select('#tag-svg');
+  tag_svg.append("g")
+         .attr('class', 'new-tag')
+         .append("rect")
+           .attr("x", 20)
+           .attr('y', 10)
+           .attr('height', 160)
+           .attr('width', 180)
+           .style('fill', '#f1c40f');
+
 };
