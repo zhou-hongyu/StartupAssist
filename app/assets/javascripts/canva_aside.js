@@ -30,7 +30,10 @@ StartupAssist.drawPanel = function(){
         .style("fill", function(d) { return fill(d.index); })
         .style("stroke", function(d) { return fill(d.index); })
         .attr("d", d3.svg.arc().outerRadius(outerRadius))
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+        .on("click", function(d) {
+          return StartupAssist.changeColor(d.index);
+        });
 
 
 };
@@ -48,4 +51,12 @@ StartupAssist.drawTags = function(){
            .attr('width', 180)
            .style('fill', '#f1c40f');
 
+};
+
+StartupAssist.changeColor = function(d){
+  var tag_svg = d3.select('#tag-svg'),
+      color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
+      tag_svg.selectAll(".new-tag rect")
+           .transition()
+           .style("fill", color_array[d]);
 };
