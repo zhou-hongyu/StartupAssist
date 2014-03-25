@@ -5,11 +5,13 @@ var tag_index = 0;
 StartupAssist.drawPanel = function(){
   var color_panel = d3.select('#canva-svg'),
       create_tag = $('#create-tag')[0],
+      save_canva = $('#save-canva-button')[0];
       width = 220,
       height = 300,
       outerRadius = Math.min(width, height) * 0.45;
 
   create_tag.addEventListener('click', StartupAssist.drawTags);
+  save_canva.addEventListener('click', StartupAssist.saveInit);
 
   var matrix = [
     [1, 1, 1, 1, 1, 1],
@@ -56,6 +58,7 @@ StartupAssist.drawTags = function(){
   // Append the rectangular
   tag_svg.append("g")
          .attr('id', 'new-tag-' + tag_index +'')
+         .attr('class', 'tag')
          .append('rect')
            .attr('class', 'tag-rect')
            .attr('x', 20)
@@ -175,6 +178,7 @@ StartupAssist.mouseUpHandler = function(event) {
 StartupAssist.changeColor = function(d){
   var tag_svg = d3.select('#canva-svg'),
       color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
+
 
   tag_svg.select('#new-tag-' + (tag_index - 1) + ' rect')
          .transition()

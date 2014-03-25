@@ -16,7 +16,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-left">
           <% if user_signed_in? %>
-            <li><a href="" id="view_saved_recipes">View Canvas</a></li>
+            <li><%= link_to "View Canvas", canvas_path(current_user) %></li>
           <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
