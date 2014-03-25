@@ -39,13 +39,6 @@ StartupAssist.drawPanel = function(){
 };
 
 
-var selectElement = 0,
-    currentX = 0,
-    currentY = 0,
-    currentTranslate = 0,
-    i = 0;
-
-
 StartupAssist.drawTags = function(){
   var tag_width = 100,
       tag_height = 80;
@@ -58,12 +51,13 @@ StartupAssist.drawTags = function(){
   // Append the rectangular
   tag_svg.append("g")
          .attr('class', 'new-tag')
-         .attr('onmousedown', 'StartupAssist.selectElement(event)')
          .append('rect')
+           .attr('class', 'tag-rect')
            .attr('x', 20)
            .attr('y', 10)
            .attr('height', tag_height)
            .attr('width', tag_width)
+           .attr('onmousedown', 'StartupAssist.selectElement(event)')
            .attr('transform', 'translate(1000, 350)')
            .style('fill', 'f1c40f');
   // Append the text field to the tag.
@@ -71,9 +65,10 @@ StartupAssist.drawTags = function(){
   var tag_content = d3.select('.new-tag');
 
   tag_content.append('text')
+         .attr('class', 'tag-content')
          .attr('x', 20)
          .attr('y', 10)
-         .attr('transform', 'translate(1050, 400)')
+         .attr('transform', 'translate(1050, 395)')
          .style('font-size', 15)
          .style('fill', 'black')
          .style('stroke', 'none')
@@ -93,15 +88,29 @@ StartupAssist.editText = function(event){
   }
 };
 
+var selectElement = 0,
+    selectContent = 0,
+    currentX = 0,
+    currentY = 0,
+    currentTranslate = 0,
+    i = 0;
+
 StartupAssist.selectElement = function(event){
+  selectContent = event.target.parentElement.getElementsByClassName('tag-content')[0];
   selectElement = event.target;
   currentX = event.clientX;
   currentY = event.clientY;
   currentTranslate = selectElement.getAttributeNS(null, "transform").slice(10, -1).split(', ');
+  currentContentTranslate = selectContent.getAttributeNS(null, "transform").slice(10, -1).split(', ');
 
-  for(i; i < currentTranslate.length; i++ ){
+  for(i = 0; i < currentTranslate.length; i++ ){
     currentTranslate[i] = parseFloat(currentTranslate[i]);
   }
+
+  for(i = 0; i < currentContentTranslate.length; i++ ){
+    currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
+  }
+
 
   selectElement.addEventListener('mousemove', StartupAssist.moveElement);
   selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler);
@@ -112,17 +121,21 @@ StartupAssist.selectElement = function(event){
 };
 
 StartupAssist.moveElement = function(event) {
-  //console.log("moveElement: clientX = " + event.clientX);
-  //console.log("moveElement: clientX = " + event.clientY);
   dx = event.clientX - currentX;
   dy = event.clientY - currentY;
 
   currentTranslate[0] = parseInt(currentTranslate[0]) + parseInt(dx);
   currentTranslate[1] = parseInt(currentTranslate[1]) + parseInt(dy);
 
+  currentContentTranslate[0] = parseInt(currentContentTranslate[0]) + parseInt(dx);
+  currentContentTranslate[1] = parseInt(currentContentTranslate[1]) + parseInt(dy);
 
   newTranslate = "translate(" + currentTranslate.join(', ') + ")";
+  newContentTranslate = "translate(" + currentContentTranslate.join(', ') + ")";
   event.target.setAttributeNS(null, "transform", newTranslate);
+  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "transform", newTranslate);
+  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "x", "70");
+  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "y", "50");
   currentX = event.clientX;
   currentY = event.clientY;
     event.preventDefault();
@@ -155,6 +168,7 @@ StartupAssist.mouseUpHandler = function(event) {
 StartupAssist.changeColor = function(d){
   var tag_svg = d3.select('#canva-svg'),
       color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
+
   tag_svg.selectAll(".new-tag rect")
          .transition()
          .style("fill", color_array[d]);
