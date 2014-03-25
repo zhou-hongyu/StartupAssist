@@ -5,7 +5,7 @@ StartupAssist.newCanva = function(){
       $new_canva_div = $('<div id="new-canva">'),
       $save_canva_div = $('<div id="save-canva">'),
       $save_canva_button = $('<button class="btn btn-primary btn-lg">Save Canva</button>'),
-      $canva_svg = $('<svg id="canva-svg" width="1300" height="500">');
+      $canva_svg = $('<svg id="canva-svg" width="1200" height="500" xmlns="http://www.w3.org/2000/svg">');
 
   $content_div.text("");
   $new_canva_div.append($canva_svg);
@@ -38,7 +38,7 @@ StartupAssist.drawCanva = function(){
        .attr('height', 490)
        .attr('rx', 10)
        .attr('ry', 10)
-       .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
+       .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ')');
 
   // Append the frame lines
   canva.append('g')
@@ -191,11 +191,26 @@ StartupAssist.drawCanva = function(){
   canva.append('g')
        .attr('class', 'icon')
        .append("svg:image")
-       .attr("xlink:href", "http://www.clker.com/cliparts/1/4/5/a/1331068897296558865Sitting%20Racoon.svg")
+       // .attr("xlink:href", "http://www.clker.com/  cliparts/1/4/5/a/1331068897296558865Sitting%20Racoon.svg")
        .attr("width", 20)
        .attr("height", 20)
        .attr("x", 228)
        .attr("y",53);
+
+  // svg input element
+
+  canva.append('g')
+       .attr('class', 'input')
+       .append("textArea")
+       .attr({
+         x: 200,
+         y: 500,
+         width: 150,
+         height: 20,
+         editable: 'simple',
+         focusable: 'true',
+       })
+       .style('font-size', '18');
 };
 
 

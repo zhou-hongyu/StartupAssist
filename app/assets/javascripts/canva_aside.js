@@ -52,20 +52,46 @@ StartupAssist.drawTags = function(){
 
   console.log("success");
   tag_svg = d3.select('#canva-svg');
+
+
+
+  // Append the rectangular
   tag_svg.append("g")
          .attr('class', 'new-tag')
-         .append("rect")
-           .attr('class', 'draggable')
-           .attr("x", 20)
+         .attr('onmousedown', 'StartupAssist.selectElement(event)')
+         .append('rect')
+           .attr('x', 20)
            .attr('y', 10)
            .attr('height', tag_height)
            .attr('width', tag_width)
            .attr('transform', 'translate(1000, 350)')
-           .attr('onmousedown', 'StartupAssist.selectElement(event)')
-           .style('fill', '#f1c40f');
+           .style('fill', 'f1c40f');
+  // Append the text field to the tag.
+
+  var tag_content = d3.select('.new-tag');
+
+  tag_content.append('text')
+         .attr('x', 20)
+         .attr('y', 10)
+         .attr('transform', 'translate(1050, 400)')
+         .style('font-size', 15)
+         .style('fill', 'black')
+         .style('stroke', 'none')
+         .style('text-anchor', 'middle')
+         .text('Tag Contents')
+         .attr('onmousedown', 'StartupAssist.editText(event)');
 
 };
 
+
+StartupAssist.editText = function(event){
+  var textElement = event.target,
+      editedText = prompt("Edit texual contents:", textElement.firstChild.data);
+
+  if( editedText !== null){
+    textElement.firstChild.data = editedText;
+  }
+};
 
 StartupAssist.selectElement = function(event){
   selectElement = event.target;
@@ -78,8 +104,8 @@ StartupAssist.selectElement = function(event){
   }
 
   selectElement.addEventListener('mousemove', StartupAssist.moveElement);
-  selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler); 
-  //selectElement.addEventListener('mouseout', StartupAssist.mouseOutHandler);
+  selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler);
+  selectElement.addEventListener('mouseout', StartupAssist.mouseOutHandler);
   selectElement.removeEventListener('mousedown', StartupAssist.selectElement);
   event.preventDefault();
   return false;
@@ -121,7 +147,7 @@ StartupAssist.mouseUpHandler = function(event) {
     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
     event.target.addEventListener('mousedown', StartupAssist.selectElement);
   }
-
+  StartupAssist.drawTags();
     event.preventDefault();
     return false;
 };
