@@ -176,7 +176,7 @@ StartupAssist.changeColor = function(d){
   var tag_svg = d3.select('#canva-svg'),
       color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
 
-  tag_svg.selectAll("#new-tag-1 rect")
+  tag_svg.select('#new-tag-' + (tag_index - 1) + ' rect')
          .transition()
          .style("fill", color_array[d]);
 };
