@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 var StartupAssist = StartupAssist || {};
 
-StartupAssist.showAllCanvas = function(){
+StartupAssist.showAllCanvas = function(callback){
   var $content_div = $("#canvas"),
       $all_canvas_div = $('<div class="all-canvas">'),
       $create_canva_div = $('<div class="new-canvas">'),
@@ -15,6 +15,5 @@ StartupAssist.showAllCanvas = function(){
   $content_div.append($all_canvas_div, $create_canva_div);
   $new_canva_button.click(function(event){
     StartupAssist.newCanva();
-    StartupAssist.saveCanva();
   });
 };

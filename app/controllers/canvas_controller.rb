@@ -15,7 +15,7 @@ class CanvasController < ApplicationController
     if user_signed_in?
       current_user.canvas << @canva
     end
-    render json: @canva
+    render json: current_user.canvas
   end
 
   def show

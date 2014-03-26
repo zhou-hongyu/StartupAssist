@@ -12,7 +12,7 @@ StartupAssist.drawPanel = function(){
 
   create_tag.addEventListener('click', StartupAssist.drawTags);
   // save_canva.addEventListener('click', StartupAssist.saveTagInit);
-  save_canva.addEventListener('click', StartupAssist.showAllCanvas);
+  save_canva.addEventListener('click', StartupAssist.saveCanva);
 
   var matrix = [
     [1, 1, 1, 1, 1, 1],

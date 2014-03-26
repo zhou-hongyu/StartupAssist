@@ -8,6 +8,7 @@ StartupAssist.saveCanva = function(){
   })
   .done(function(response) {
     console.log(response);
+    StartupAssist.showAllCanvas(response);
   })
   .fail(function() {
     console.log("error");
