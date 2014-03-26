@@ -8,15 +8,14 @@ class CanvasController < ApplicationController
   end
 
   def new
-    @canva = Canva.new
-    respond_to do |format|
-      format.html
-      format.json { render json: @canva }
-    end
   end
 
   def create
-    
+    @canva = Canva.new
+    if user_signed_in?
+      current_user.canvas << @canva
+    end
+    render json: @canva
   end
 
   def show
@@ -27,4 +26,5 @@ class CanvasController < ApplicationController
 
   def destroy
   end
+
 end

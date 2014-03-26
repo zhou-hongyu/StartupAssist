@@ -2,6 +2,7 @@ class TagsController < ApplicationController
   
   def create
     @tag = Tag.new(tag_params)
+    @tag.save
     render json: @tag
   end
 
