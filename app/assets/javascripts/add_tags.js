@@ -1,7 +1,7 @@
 var StartupAssist = StartupAssist || {};
 
 
-StartupAssist.saveTagInit = function(){
+StartupAssist.saveTagInit = function(canva_id){
   var all_tag = $('.tag'),
       tag_array = [];
   for (i = 0; i < all_tag.length; i++){
@@ -27,19 +27,18 @@ StartupAssist.saveTagInit = function(){
     tag_array[i].txt.style = all_tag[i].lastChild.getAttributeNS(null, 'style');
     tag_array[i].txt.inner = all_tag[i].lastChild.innerHTML;
   }
-  //
   for(k = 0; k < tag_array.length; k++){
-    StartupAssist.saveTag(tag_array[k]);
+    StartupAssist.saveTag(tag_array[k], canva_id);
   }
 
 };
 
-StartupAssist.saveTag = function(tag){
+StartupAssist.saveTag = function(tag, the_id){
   $.ajax({
-    url: '/tags',
+    url: '/canvas/' + the_id + '/tags',
     type: 'POST',
     dataType: 'json',
-    data: { tag: { tag_id: tag.id, tag_class: tag.class, rect_class: tag.rect.class, rect_height: tag.rect.onmousedown, rect_style: tag.rect.style, rect_transform: tag.rect.transform, rect_width: tag.rect.width, rect_x: tag.rect.x, rect_y: tag.rect.y, txt_class: tag.txt.class, txt_inner: tag.txt.inner, txt_onmousedown: tag.txt.onmousedown, txt_style: tag.txt.style, txt_transform:tag.txt.transform, txt_width: tag.txt.width, txt_x: tag.txt.x, txt_y: tag.txt.y} },
+    data: { canva_id: the_id, tag: { tag_id: tag.id, tag_class: tag.class, rect_class: tag.rect.class, rect_height: tag.rect.onmousedown, rect_style: tag.rect.style, rect_transform: tag.rect.transform, rect_width: tag.rect.width, rect_x: tag.rect.x, rect_y: tag.rect.y, txt_class: tag.txt.class, txt_inner: tag.txt.inner, txt_onmousedown: tag.txt.onmousedown, txt_style: tag.txt.style, txt_transform:tag.txt.transform, txt_width: tag.txt.width, txt_x: tag.txt.x, txt_y: tag.txt.y} },
   })
   .done(function(response) {
     console.log(response);

@@ -1,5 +1,15 @@
-<script>
-  $(document).ready(function() {
-    StartupAssist.buildHomepage();
-  });
-</script>
+<% if !user_signed_in? %>
+  <script>
+    var StartupAssist = StartupAssist || {};
+    $(document).ready(function() {
+      StartupAssist.buildHomepage();
+    });
+  </script>
+<% else %>
+  <script>
+    var StartupAssist = StartupAssist || {};
+    $(document).ready(function() {
+      StartupAssist.showAllCanvas();
+    });
+  </script>
+<% end %>

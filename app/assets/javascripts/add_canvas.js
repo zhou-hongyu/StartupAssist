@@ -7,7 +7,7 @@ StartupAssist.saveCanva = function(){
     dataType: 'json',
   })
   .done(function(response) {
-    console.log(response);
+    StartupAssist.saveTagInit(response[0].id);
     StartupAssist.showAllCanvas(response);
   })
   .fail(function() {

@@ -1,9 +1,10 @@
 class TagsController < ApplicationController
-  
+
   def create
+    @canva = Canva.find(params[:canva_id])
     @tag = Tag.new(tag_params)
-    @tag.save
-    render json: @tag
+    @canva.tags << @tag
+    render json: (@canva.tags)
   end
 
   private
