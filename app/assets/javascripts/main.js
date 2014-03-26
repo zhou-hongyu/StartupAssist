@@ -6,7 +6,7 @@ StartupAssist.buildHomepage = function(){
       $registration_div = $('<div class="jumbotron-words">'),
       $registration_memo = $('<h2>High Effiency Business Model Generation Tool<h2>'),
       $registration_p = $('<p>'),
-      $registration_button = $('<a class="btn btn-primary btn-lg" role="button" href="/users/sign_up">Sign Up Now!</a>'),
+      $registration_button = $('<a class="btn btn-primary btn-lg" role="button" href="/users/sign_up" >Sign Up Now!</a>'),
       $registration_text = $('<h3>"Systematically understand, design & differentiate your business model."</h3>'),
       $sign_up_div = $('<div class="jumbotron-words">'),
       $sign_up_memo = $("<h2>Sign Up<h2>");
