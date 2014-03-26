@@ -1,8 +1,8 @@
 class CreateTags < ActiveRecord::Migration
   def change
     create_table :tags do |t|
-      t.text :content
-      t.references :category, index: true
+      t.text :properties
+      t.references :canva, index: true
 
       t.timestamps
     end

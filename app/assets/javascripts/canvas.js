@@ -13,5 +13,6 @@ StartupAssist.showAllCanvas = function(){
   $content_div.append($all_canvas_div, $create_canva_div);
   $new_canva_button.click(function(event){
     StartupAssist.newCanva();
+    StartupAssist.saveCanvaInit();
   });
 };

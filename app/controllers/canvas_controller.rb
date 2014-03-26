@@ -16,6 +16,7 @@ class CanvasController < ApplicationController
   end
 
   def create
+    
   end
 
   def show

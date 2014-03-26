@@ -23,6 +23,7 @@ HOMEPAGE STYLES
 }
 
 .btn-primary {
+  color: #ecf0f1;
   font-family: "Comic Sans MS", cursive, sans-serif
 }
 
@@ -35,48 +36,6 @@ HOMEPAGE STYLES
 
 .img-content {
   margin-top: 100px;
-}
-
-.navbar-brand {
-  color: white;
-}
-
-.navbar {
-  margin-bottom: 0;
-  background-color: #2c3e50;
-}
-
-#sign-in {
-  color: white;
-  font-family: "Comic Sans MS", cursive, sans-serif
-}
-
-#logged-in {
-  color: white;
-  font-family: "Comic Sans MS", cursive, sans-serif
-
-}
-
-#view-all {
-  color: white;
-  font-family: "Comic Sans MS", cursive, sans-serif
-
-}
-
-#edit {
-  color: white;
-  font-family: "Comic Sans MS", cursive, sans-serif
-
-}
-
-#brand {
-  color: white;
-  font-family: "Comic Sans MS", cursive, sans-serif
-}
-
-#sign-out {
-  color: white;
-  font-family: "Comic Sans MS", cursive, sans-serif
 }
 
 .jumbotron-words {
@@ -98,8 +57,47 @@ HOMEPAGE STYLES
 NAVBAR STYLES
 *******************************/
 
-.navbar-brand {
-  font-color: white;
+.navbar {
+  margin-bottom: 0;
+  background-color: #2c3e50;
+}
+
+
+#sign-in {
+  color: #ecf0f1;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+#sigh-up {
+  color: #ecf0f1;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+#logged-in {
+  color: #ecf0f1;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+
+}
+
+#view-all {
+  color: #ecf0f1;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+#edit {
+  color: #ecf0f1;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+
+}
+
+#brand {
+  color: #ecf0f1;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+#sign-out {
+  color: #ecf0f1;
+  font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 /*******************************

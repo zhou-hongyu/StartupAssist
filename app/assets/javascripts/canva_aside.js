@@ -11,7 +11,7 @@ StartupAssist.drawPanel = function(){
       outerRadius = Math.min(width, height) * 0.45;
 
   create_tag.addEventListener('click', StartupAssist.drawTags);
-  save_canva.addEventListener('click', StartupAssist.saveInit);
+  save_canva.addEventListener('click', StartupAssist.saveTagInit);
 
   var matrix = [
     [1, 1, 1, 1, 1, 1],

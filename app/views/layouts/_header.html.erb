@@ -8,15 +8,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to 'StartupAssist', root_url, class: 'navbar-brand', id: 'brand' %>
-
+      <% if !user_signed_in? %>
+        <%= link_to 'StartupAssist', root_url, class: 'navbar-brand', id: 'brand' %>
+      <% else %>
+        <%= link_to 'StartupAssist', canvas_path, class: 'navbar-brand', id: 'brand' %>
+      <% end %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-left">
           <% if user_signed_in? %>
-            <li><%= link_to "View Canvas", canvas_path(current_user), id: 'view-all' %></li>
+            <li><%= link_to "View Canvas", canvas_path, id: 'view-all' %></li>
           <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">

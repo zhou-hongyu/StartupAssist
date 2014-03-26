@@ -3,8 +3,6 @@ StartupAssist::Application.routes.draw do
   root 'welcome#index'
 
   resources :canvas do
-    resources :categories do
-      resources :tags
-    end
+    resources :tags
   end
 end
