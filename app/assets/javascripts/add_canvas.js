@@ -9,6 +9,7 @@ StartupAssist.saveCanva = function(){
   .done(function(response) {
     StartupAssist.saveTagInit(response[0].id);
     StartupAssist.showAllCanvas(response);
+    
   })
   .fail(function() {
     console.log("error");
