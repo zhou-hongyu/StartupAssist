@@ -1,6 +1,6 @@
 var StartupAssist = StartupAssist || {};
 
-StartupAssist.saveCanvaInit = function(){
+StartupAssist.saveCanva = function(){
   $.ajax({
     url: '/canvas',
     type: 'POST',
@@ -15,5 +15,4 @@ StartupAssist.saveCanvaInit = function(){
   .always(function() {
     console.log("complete");
   });
-  
 };
