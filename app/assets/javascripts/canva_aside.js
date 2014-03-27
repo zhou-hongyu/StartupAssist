@@ -70,7 +70,7 @@ StartupAssist.tagHandler = function(canva_id){
   });
 };
 
-StartupAssist.drawTags = function(callback){
+StartupAssist.drawTags = function(callback, canva_id){
 
   var tag_width = 75,
       tag_height = 60;
@@ -109,6 +109,7 @@ StartupAssist.drawTags = function(callback){
          .text('Contents')
          .attr('onmousedown', 'StartupAssist.editText(event)');
 
+  StartupAssist.updateTagInit(canva_id);
 };
 
 StartupAssist.getTags = function(canva_id){

@@ -10,6 +10,8 @@ class TagsController < ApplicationController
   def update
     @tag = Tag.find(params[:tag_id_int])
     @tag.update!(tag_params)
+
+    render nothing: true
   end
 
   private

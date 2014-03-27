@@ -1,7 +1,7 @@
 var StartupAssist = StartupAssist || {};
 
 
-StartupAssist.saveTagInit = function(canva_id){
+StartupAssist.updateTagInit = function(canva_id){
 
   var all_tag = $('.tag'),
       tag_array = [];
