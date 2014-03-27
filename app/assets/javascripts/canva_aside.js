@@ -40,6 +40,9 @@ StartupAssist.drawPanel = function(){
 
 };
 
+StartupAssist.changeTagIndex = function(tag_id){
+  current_tag_id = tag_id;
+};
 
 StartupAssist.changeColor = function(d){
   var tag_svg = d3.select('#canva-svg'),
@@ -198,7 +201,8 @@ StartupAssist.selectElement = function(event){
   for(i = 0; i < currentContentTranslate.length; i++ ){
     currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
   }
-
+  debugger;
+  selectElement.addEventListener('mouseup', StartupAssist.changeTagIndex(parseInt(event.target.parentElement.id.split('-')[2])));
   selectElement.addEventListener('mousemove', StartupAssist.moveElement);
   selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler);
   selectElement.addEventListener('mouseout', StartupAssist.mouseOutHandler);
