@@ -1,6 +1,6 @@
 var StartupAssist = StartupAssist || {};
 
-var tag_index;
+var current_tag_id;
 
 StartupAssist.drawPanel = function(){
   var color_panel = d3.select('#canva-svg'),
@@ -35,17 +35,17 @@ StartupAssist.drawPanel = function(){
         .attr("d", d3.svg.arc().outerRadius(outerRadius))
         .attr("transform", "translate(" + (960 + width / 2) + ", " + height / 2 + ")")
         .on("click", function(d) {
-          return StartupAssist.changeColor(d.index, tag_index);
+          return StartupAssist.changeColor(d.index);
         });
 
 };
 
 
-StartupAssist.changeColor = function(d, tag_index){
+StartupAssist.changeColor = function(d){
   var tag_svg = d3.select('#canva-svg'),
       color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
 
-  tag_svg.select('#new-tag-' + (tag_index - 1) + ' rect')
+  tag_svg.select('#new-tag-' + current_tag_id + ' rect')
          .transition()
          .style("fill", color_array[d]);
 };
@@ -75,6 +75,8 @@ StartupAssist.drawTags = function(callback){
   var tag_width = 75,
       tag_height = 60;
   tag_svg = d3.select('#canva-svg');
+
+  current_tag_id = callback.id;
 
   // Append the rectangular
   tag_svg.append("g")
