@@ -17,7 +17,7 @@ StartupAssist.getCanva = function(canva_id){
 
   $save_canva_button.click(function(){
     StartupAssist.saveTagInit(canva_id);
-    StartupAssist.showAllCanvas(canva_id);
+    StartupAssist.updateCanva(canva_id);
   });
 
   $create_tag_button.click(function(){

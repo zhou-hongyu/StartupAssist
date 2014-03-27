@@ -1,6 +1,7 @@
 class CanvasController < ApplicationController
   def index
     @canvas = Canva.all
+
     respond_to do |format|
       format.html
       format.json { render json: @canvas }

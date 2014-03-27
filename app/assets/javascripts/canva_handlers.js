@@ -19,6 +19,7 @@ StartupAssist.saveCanva = function(){
 };
 
 StartupAssist.updateCanva = function(){
+  debugger;
   $.ajax({
     url: '/canvas',
     type: 'GET',

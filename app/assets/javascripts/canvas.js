@@ -20,6 +20,7 @@ $(document).ready(function(){
 var StartupAssist = StartupAssist || {};
 
 StartupAssist.showAllCanvas = function(callback){
+
   var $content_div = $("#canvas"),
       $all_canvas_div = $('<div class="all-canvas">'),
       $create_canva_div = $('<div class="new-canvas">'),
