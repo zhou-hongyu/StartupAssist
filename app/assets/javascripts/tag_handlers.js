@@ -29,17 +29,18 @@ StartupAssist.saveTagInit = function(canva_id){
     tag_array[i].txt.inner = all_tag[i].lastChild.innerHTML;
   }
   for(k = 0; k < tag_array.length; k++){
-    StartupAssist.saveTag(tag_array[k], canva_id);
+    StartupAssist.updateTag(tag_array[k], canva_id);
   }
 
 };
 
-StartupAssist.saveTag = function(tag, the_id){
+StartupAssist.updateTag = function(tag, the_id){
+  var tag_id = parseInt(tag.id.split('-')[2]);
   $.ajax({
-    url: '/canvas/' + the_id + '/tags',
-    type: 'POST',
+    url: '/canvas/' + the_id + '/tags/' + tag_id,
+    type: 'PATCH',
     dataType: 'json',
-    data: { canva_id: the_id, tag: { tag_id: tag.id, tag_class: tag.class, rect_class: tag.rect.class, rect_height: tag.rect.height, rect_onmousedown:tag.rect.onmousedown, rect_style: tag.rect.style, rect_transform: tag.rect.transform, rect_width: tag.rect.width, rect_x: tag.rect.x, rect_y: tag.rect.y, txt_class: tag.txt.class, txt_inner: tag.txt.inner, txt_onmousedown: tag.txt.onmousedown, txt_style: tag.txt.style, txt_transform:tag.txt.transform, txt_width: tag.txt.width, txt_x: tag.txt.x, txt_y: tag.txt.y} },
+    data: { canva_id: the_id, tag_id_int: tag_id, tag: { tag_id: tag.id, tag_class: tag.class, rect_class: tag.rect.class, rect_height: tag.rect.height, rect_onmousedown:tag.rect.onmousedown, rect_style: tag.rect.style, rect_transform: tag.rect.transform, rect_width: tag.rect.width, rect_x: tag.rect.x, rect_y: tag.rect.y, txt_class: tag.txt.class, txt_inner: tag.txt.inner, txt_onmousedown: tag.txt.onmousedown, txt_style: tag.txt.style, txt_transform:tag.txt.transform, txt_width: tag.txt.width, txt_x: tag.txt.x, txt_y: tag.txt.y} },
   })
   .done(function(response) {
     console.log(response);

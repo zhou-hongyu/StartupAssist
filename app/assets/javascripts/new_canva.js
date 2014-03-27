@@ -21,13 +21,12 @@ StartupAssist.getCanva = function(canva_id){
   });
 
   $create_tag_button.click(function(){
-    StartupAssist.drawTags();
+    StartupAssist.tagHandler(canva_id);
   });
 
-  StartupAssist.drawPanel();
   StartupAssist.getTags(canva_id);
-  StartupAssist.drawTags();
-
+  StartupAssist.tagHandler(canva_id);
+  StartupAssist.drawPanel();
 };
 
 StartupAssist.drawCanva = function(){

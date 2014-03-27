@@ -1,13 +1,12 @@
 var StartupAssist = StartupAssist || {};
 
-var tag_index = 0;
+var tag_index;
 
 StartupAssist.drawPanel = function(){
   var color_panel = d3.select('#canva-svg'),
       width = 220,
       height = 300,
       outerRadius = Math.min(width, height) * 0.45;
-
 
   var matrix = [
     [1, 1, 1, 1, 1, 1],
@@ -26,6 +25,7 @@ StartupAssist.drawPanel = function(){
       .range(["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"]);
 
   color_panel.append("g")
+      .attr('class', 'color-panel')
       .selectAll("path")
       .data(chord.groups)
       .enter()
@@ -35,15 +35,15 @@ StartupAssist.drawPanel = function(){
         .attr("d", d3.svg.arc().outerRadius(outerRadius))
         .attr("transform", "translate(" + (960 + width / 2) + ", " + height / 2 + ")")
         .on("click", function(d) {
-          return StartupAssist.changeColor(d.index);
+          return StartupAssist.changeColor(d.index, tag_index);
         });
 
 };
 
-StartupAssist.changeColor = function(d){
+
+StartupAssist.changeColor = function(d, tag_index){
   var tag_svg = d3.select('#canva-svg'),
       color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
-
 
   tag_svg.select('#new-tag-' + (tag_index - 1) + ' rect')
          .transition()
@@ -51,14 +51,34 @@ StartupAssist.changeColor = function(d){
 };
 
 
-StartupAssist.drawTags = function(){
+StartupAssist.tagHandler = function(canva_id){
+  $.ajax({
+    url: '/canvas/' + canva_id + '/tags',
+    type: 'POST',
+    dataType: 'json',
+    data: {canva_id: canva_id},
+  })
+  .done(function(response) {
+    StartupAssist.drawTags(response);
+    tag_index = response.id;
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+};
+
+StartupAssist.drawTags = function(callback){
+
   var tag_width = 75,
       tag_height = 60;
   tag_svg = d3.select('#canva-svg');
 
   // Append the rectangular
   tag_svg.append("g")
-         .attr('id', 'new-tag-' + tag_index +'')
+         .attr('id', 'new-tag-' + callback.id +'')
          .attr('class', 'tag')
          .append('rect')
            .attr('class', 'tag-rect')
@@ -71,7 +91,7 @@ StartupAssist.drawTags = function(){
            .style('fill', 'f1c40f');
   // Append the text field to the tag.
 
-  var tag_content = d3.select('#new-tag-' + tag_index + '');
+  var tag_content = d3.select('#new-tag-' + callback.id + '');
 
   tag_content.append('text')
          .attr('class', 'tag-content')
@@ -87,7 +107,6 @@ StartupAssist.drawTags = function(){
          .text('Contents')
          .attr('onmousedown', 'StartupAssist.editText(event)');
 
-  tag_index += 1;
 };
 
 StartupAssist.getTags = function(canva_id){
@@ -105,7 +124,6 @@ StartupAssist.getTags = function(canva_id){
     console.log("error");
   })
   .always(function(response) {
-    StartupAssist.redrawTags(response);
   });
 };
 
