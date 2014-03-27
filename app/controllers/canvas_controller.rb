@@ -8,11 +8,8 @@ class CanvasController < ApplicationController
     end
   end
 
-  def new
-  end
-
   def create
-    @canva = Canva.create!(params[:id])
+    @canva = Canva.create!(canva_params)
     @canva.save
     if user_signed_in?
       current_user.canvas << @canva
@@ -26,10 +23,10 @@ class CanvasController < ApplicationController
     render json: @canva.tags
   end
 
-  def update
-  end
+  private
 
-  def destroy
+  def canva_params
+    params.require(:canva).permit(:id, :business_name)
   end
 
 end

@@ -201,7 +201,6 @@ StartupAssist.selectElement = function(event){
   for(i = 0; i < currentContentTranslate.length; i++ ){
     currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
   }
-  debugger;
   selectElement.addEventListener('mouseup', StartupAssist.changeTagIndex(parseInt(event.target.parentElement.id.split('-')[2])));
   selectElement.addEventListener('mousemove', StartupAssist.moveElement);
   selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler);

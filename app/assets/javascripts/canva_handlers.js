@@ -1,11 +1,12 @@
 var StartupAssist = StartupAssist || {};
 
-StartupAssist.saveCanva = function(){
+StartupAssist.saveCanva = function(startup_name){
   $.ajax({
     async: false,
     url: '/canvas',
     type: 'POST',
     dataType: 'json',
+    data: { canva: { business_name: startup_name }},
   })
   .done(function(response) {
     StartupAssist.getCanva(response.id);
