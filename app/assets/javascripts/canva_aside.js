@@ -2,17 +2,6 @@ var StartupAssist = StartupAssist || {};
 
 var tag_index = 0;
 
-StartupAssist.canvaHandler = function(canva_id){
-  var $save_canva = $('#save-canva-button')[0];
-
-  $save_canva.click(function(){
-    StartupAssist.saveTagInit(canva_id);
-    StartupAssist.showAllCanvas(canva_id);
-  });
-
-
-};
-
 StartupAssist.drawPanel = function(){
   var color_panel = d3.select('#canva-svg'),
       width = 220,

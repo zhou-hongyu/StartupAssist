@@ -32,7 +32,6 @@ StartupAssist.showAllCanvas = function(callback){
     $canva_show_button = $('<button class ="btn btn-primary btn-lg show-canva"' + canva_button_id + '>Start up</button>');
     $all_canvas_div.append($canva_show_button);
   }
-
   $create_canva_div.append($new_canva_button);
   $content_div.append($all_canvas_div, $create_canva_div);
   $new_canva_button.click(function(event){

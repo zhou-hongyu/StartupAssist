@@ -1,6 +1,6 @@
 class CanvasController < ApplicationController
   def index
-    @canvas = Canva.all
+    @canvas = current_user.canvas
 
     respond_to do |format|
       format.html
@@ -27,15 +27,6 @@ class CanvasController < ApplicationController
   end
 
   def update
-    # @canva = Canva.find(params[:canva_id])
-    # current_user.canvas.each do |canva|
-    #   if canva.id == @canva.id
-    #     current_user.canvas.delete_at(a.index(canva))
-    #     current_user << @canva.id
-    #   end
-    # end
-
-    # render json: current_user.canvas
   end
 
   def destroy
