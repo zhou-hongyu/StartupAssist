@@ -11,11 +11,12 @@ class CanvasController < ApplicationController
   end
 
   def create
-    @canva = Canva.new
+    @canva = Canva.create!(params[:id])
+    @canva.save
     if user_signed_in?
       current_user.canvas << @canva
     end
-    render json: current_user.canvas
+    render json: @canva
   end
 
   def show
@@ -25,6 +26,15 @@ class CanvasController < ApplicationController
   end
 
   def update
+    # @canva = Canva.find(params[:canva_id])
+    # current_user.canvas.each do |canva|
+    #   if canva.id == @canva.id
+    #     current_user.canvas.delete_at(a.index(canva))
+    #     current_user << @canva.id
+    #   end
+    # end
+
+    # render json: current_user.canvas
   end
 
   def destroy

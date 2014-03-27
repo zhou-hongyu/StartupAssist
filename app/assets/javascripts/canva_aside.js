@@ -2,16 +2,23 @@ var StartupAssist = StartupAssist || {};
 
 var tag_index = 0;
 
+StartupAssist.canvaHandler = function(canva_id){
+  var $save_canva = $('#save-canva-button')[0];
+
+  $save_canva.click(function(){
+    StartupAssist.saveTagInit(canva_id);
+    StartupAssist.showAllCanvas(canva_id);
+  });
+
+
+};
+
 StartupAssist.drawPanel = function(){
   var color_panel = d3.select('#canva-svg'),
-      create_tag = $('#create-tag')[0],
-      save_canva = $('#save-canva-button')[0];
       width = 220,
       height = 300,
       outerRadius = Math.min(width, height) * 0.45;
 
-  create_tag.addEventListener('click', StartupAssist.drawTags);
-  save_canva.addEventListener('click', StartupAssist.saveCanva);
 
   var matrix = [
     [1, 1, 1, 1, 1, 1],
@@ -42,17 +49,23 @@ StartupAssist.drawPanel = function(){
           return StartupAssist.changeColor(d.index);
         });
 
+};
 
+StartupAssist.changeColor = function(d){
+  var tag_svg = d3.select('#canva-svg'),
+      color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
+
+
+  tag_svg.select('#new-tag-' + (tag_index - 1) + ' rect')
+         .transition()
+         .style("fill", color_array[d]);
 };
 
 
-StartupAssist.drawTags = function(canva_id){
+StartupAssist.drawTags = function(){
   var tag_width = 75,
       tag_height = 60;
   tag_svg = d3.select('#canva-svg');
-
-  StartupAssist.getTags(canva_id);
-
 
   // Append the rectangular
   tag_svg.append("g")
@@ -96,13 +109,14 @@ StartupAssist.getTags = function(canva_id){
     data: { canva_id: canva_id },
   })
   .done(function(response) {
+    console.log(response);
     StartupAssist.redrawTags(response);
   })
   .fail(function() {
     console.log("error");
   })
-  .always(function() {
-    console.log("complete");
+  .always(function(response) {
+    StartupAssist.redrawTags(response);
   });
 };
 
@@ -228,12 +242,4 @@ StartupAssist.mouseUpHandler = function(event) {
     return false;
 };
 
-StartupAssist.changeColor = function(d){
-  var tag_svg = d3.select('#canva-svg'),
-      color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
 
-
-  tag_svg.select('#new-tag-' + (tag_index - 1) + ' rect')
-         .transition()
-         .style("fill", color_array[d]);
-};

@@ -1,6 +1,7 @@
 var StartupAssist = StartupAssist || {};
 
-StartupAssist.newCanva = function(canva_id){
+
+StartupAssist.getCanva = function(canva_id){
   var $content_div = $('#canvas'),
       $new_canva_div = $('<div id="new-canva">'),
       $save_canva_div = $('<div id="save-canva">'),
@@ -13,12 +14,24 @@ StartupAssist.newCanva = function(canva_id){
   $content_div.append($new_canva_div, $save_canva_div);
 
   StartupAssist.drawCanva();
+
+  $save_canva_button.click(function(){
+    StartupAssist.saveTagInit(canva_id);
+    StartupAssist.showAllCanvas(canva_id);
+  });
+
+  $create_tag_button.click(function(){
+    StartupAssist.drawTags();
+  });
+
   StartupAssist.drawPanel();
-  StartupAssist.drawTags(canva_id);
+  StartupAssist.getTags(canva_id);
+  StartupAssist.drawTags();
+
 };
 
 StartupAssist.drawCanva = function(){
-  var canva = d3.select('#canva-svg'),
+  var $canva = d3.select('#canva-svg'),
       column_width = 180,
       canva_height = 500,
       font_height = 13,
@@ -26,9 +39,8 @@ StartupAssist.drawCanva = function(){
       x_offset = 5,
       y_offset = 15,
       frame_offset = 5;
-
   // Append the frame rect
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'frame')
        .append('rect')
        .attr('class', 'frame-rect')
@@ -39,9 +51,8 @@ StartupAssist.drawCanva = function(){
        .attr('rx', 10)
        .attr('ry', 10)
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ')');
-
   // Append the frame lines
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', 0)
@@ -50,7 +61,7 @@ StartupAssist.drawCanva = function(){
        .attr('y2', y2 - frame_offset * 2)
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', column_width * 2.5)
@@ -59,7 +70,7 @@ StartupAssist.drawCanva = function(){
        .attr('y2', canva_height - frame_offset * 2)
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', column_width)
@@ -68,7 +79,7 @@ StartupAssist.drawCanva = function(){
        .attr('y2', y2 - frame_offset * 2)
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', column_width * 2)
@@ -77,7 +88,7 @@ StartupAssist.drawCanva = function(){
        .attr('y2', y2 - frame_offset * 2)
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', column_width * 3)
@@ -86,7 +97,7 @@ StartupAssist.drawCanva = function(){
        .attr('y2', y2 - frame_offset * 2)
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', column_width * 4)
@@ -95,7 +106,7 @@ StartupAssist.drawCanva = function(){
        .attr('y2', y2 - frame_offset * 2)
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', column_width)
@@ -105,7 +116,7 @@ StartupAssist.drawCanva = function(){
        .attr('transform', 'translate(' + frame_offset + ', ' + frame_offset + ' )');
 
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'line')
        .append('line')
        .attr('x1', column_width * 3)
@@ -116,79 +127,79 @@ StartupAssist.drawCanva = function(){
 
 
   // Append the Categories
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Key Partners')
        .attr('transform', 'translate(' + (x_offset + frame_offset) + ', ' + (y_offset + frame_offset) +')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Key Activities')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width) + ', ' + (y_offset + frame_offset) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Key Resources')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width) + ', ' + (y_offset + y2 / 2) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Value')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 2) + ', ' + (y_offset + frame_offset) + ')')
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Propositions')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 2) + ', ' + (y_offset + frame_offset + font_height) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Customer')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 3) + ', ' + (y_offset + frame_offset) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Relationships')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 3) + ', ' + (y_offset + frame_offset + font_height) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Channels')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 3) + ', ' + (y_offset + y2 / 2) +')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Customer')
        .attr('transform', 'translate(' + (x_offset + frame_offset +column_width * 4) + ', ' + (y_offset + frame_offset) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Segments')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 4) + ', ' + (y_offset + frame_offset + font_height) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Cost Structure')
        .attr('transform', 'translate(' + (x_offset + frame_offset) + ', ' + (y_offset - frame_offset + y2) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'category')
        .append('text')
        .text('Revenue Streams')
        .attr('transform', 'translate(' + (x_offset + frame_offset + column_width * 2.5) + ', ' + (y_offset - frame_offset + y2) + ')');
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'icon')
        .append("svg:image")
        // .attr("xlink:href", "http://www.clker.com/  cliparts/1/4/5/a/1331068897296558865Sitting%20Racoon.svg")
@@ -199,7 +210,7 @@ StartupAssist.drawCanva = function(){
 
   // svg input element
 
-  canva.append('g')
+  $canva.append('g')
        .attr('class', 'input')
        .append("textArea")
        .attr({

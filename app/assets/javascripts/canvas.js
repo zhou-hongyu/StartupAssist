@@ -1,5 +1,6 @@
 $(document).ready(function(){
   $.ajax({
+    async: false,
     url: '/canvas',
     type: 'GET',
     dataType: 'json',
@@ -34,10 +35,10 @@ StartupAssist.showAllCanvas = function(callback){
   $create_canva_div.append($new_canva_button);
   $content_div.append($all_canvas_div, $create_canva_div);
   $new_canva_button.click(function(event){
-    StartupAssist.newCanva();
+    StartupAssist.saveCanva();
   });
   var $show_the_canva_button = $('.show-canva');
   $show_the_canva_button.click(function(event){
-    StartupAssist.newCanva(parseInt(event.target.id.split('-')[1]));
+    StartupAssist.getCanva(parseInt(event.target.id.split('-')[1]));
   });
 };
