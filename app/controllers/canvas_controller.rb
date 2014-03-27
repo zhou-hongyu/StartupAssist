@@ -19,6 +19,9 @@ class CanvasController < ApplicationController
   end
 
   def show
+    @canva = Canva.find(params[:canva_id])
+
+    render json: @canva.tags
   end
 
   def update

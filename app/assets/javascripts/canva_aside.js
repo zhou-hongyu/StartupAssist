@@ -46,13 +46,12 @@ StartupAssist.drawPanel = function(){
 };
 
 
-StartupAssist.drawTags = function(){
+StartupAssist.drawTags = function(canva_id){
   var tag_width = 75,
       tag_height = 60;
-
-  console.log("success");
   tag_svg = d3.select('#canva-svg');
 
+  StartupAssist.getTags(canva_id);
 
 
   // Append the rectangular
@@ -83,10 +82,64 @@ StartupAssist.drawTags = function(){
          .style('fill', 'black')
          .style('stroke', 'none')
          .style('text-anchor', 'middle')
-         .text('  Contents')
+         .text('Contents')
          .attr('onmousedown', 'StartupAssist.editText(event)');
 
   tag_index += 1;
+};
+
+StartupAssist.getTags = function(canva_id){
+  $.ajax({
+    url: '/canvas/' + canva_id ,
+    type: 'GET',
+    dataType: 'json',
+    data: { canva_id: canva_id },
+  })
+  .done(function(response) {
+    StartupAssist.redrawTags(response);
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+};
+
+StartupAssist.redrawTags = function(tags) {
+  var tag_width = 75,
+      tag_height = 60;
+  tag_svg = d3.select('#canva-svg');
+  for(i = 0; i < tags.length; i++) {
+    tag_svg.append("g")
+           .attr('id', tags[i].properties.tag_id)
+           .attr('class', 'tag')
+           .append('rect')
+             .attr('class', 'tag-rect')
+             .attr('x', 20)
+             .attr('y', 11)
+             .attr('height', tag_height)
+             .attr('width', tag_width)
+             .attr('onmousedown', 'StartupAssist.selectElement(event)')
+             .attr('transform', tags[i].properties.rect_transform)
+             .style('fill', tags[i].properties.rect_style.slice(7, -1));
+
+    var tag_content = d3.select('#' + tags[i].properties.tag_id);
+
+    tag_content.append('text')
+           .attr('class', 'tag-content')
+           .attr('x', tags[i].properties.txt_x)
+           .attr('y', tags[i].properties.txt_y)
+           .attr('width', 20)
+           .attr('transform', tags[i].properties.txt_transform)
+           .style('font-size', 12)
+           .style('font-family', '"Comic Sans MS", cursive, sans-serif')
+           .style('fill', 'black')
+           .style('stroke', 'none')
+           .style('text-anchor', 'middle')
+           .text(tags[i].properties.txt_inner)
+           .attr('onmousedown', 'StartupAssist.editText(event)');
+  }
 };
 
 StartupAssist.editText = function(event){

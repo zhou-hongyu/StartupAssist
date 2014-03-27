@@ -1,13 +1,12 @@
 var StartupAssist = StartupAssist || {};
 
-StartupAssist.newCanva = function(){
+StartupAssist.newCanva = function(canva_id){
   var $content_div = $('#canvas'),
       $new_canva_div = $('<div id="new-canva">'),
       $save_canva_div = $('<div id="save-canva">'),
       $save_canva_button = $('<button id="save-canva-button" class="btn btn-primary btn-lg">Save Canva</button>'),
       $create_tag_button = $('<button id="create-tag" class="btn btn-primary btn-lg">New Tag</button>'),
       $canva_svg = $('<svg id="canva-svg" width="1200" height="500" xmlns="http://www.w3.org/2000/svg">');
-
   $content_div.text("");
   $new_canva_div.append($canva_svg);
   $save_canva_div.append($create_tag_button, $save_canva_button);
@@ -15,7 +14,7 @@ StartupAssist.newCanva = function(){
 
   StartupAssist.drawCanva();
   StartupAssist.drawPanel();
-  StartupAssist.drawTags();
+  StartupAssist.drawTags(canva_id);
 };
 
 StartupAssist.drawCanva = function(){
