@@ -25,9 +25,11 @@ StartupAssist.showAllCanvas = function(callback){
       $all_canvas_div = $('<div class="all-canvas">'),
       $create_canva_div = $('<div class="new-canvas">'),
       $new_canva_button = $('<button id="assign-name" class="btn btn-primary btn-lg">Create New Canva</button>')[0];
+
   $content_div.text("");
 
   $new_canva_button.addEventListener('click', StartupAssist.assignName);
+  $new_canva_button.addEventListener('click', StartupAssist.clearFlash);
 
   for(i = 0; i < callback.length; i++){
     canva_button_id = 'id="canva-' + callback[i].id + '"';
@@ -36,11 +38,10 @@ StartupAssist.showAllCanvas = function(callback){
   }
   $create_canva_div.append($new_canva_button);
   $content_div.append($all_canvas_div, $create_canva_div);
-  // $new_canva_button.click(function(event){
-  //   StartupAssist.saveCanva();
-  // });
+
   var $show_the_canva_button = $('.show-canva');
   $show_the_canva_button.click(function(event){
+    StartupAssist.clearFlash();
     StartupAssist.getCanva(parseInt(event.target.id.split('-')[1]));
   });
 };
@@ -56,4 +57,10 @@ StartupAssist.assignName = function(){
   document.getElementById("assign-name").removeEventListener('click', StartupAssist.assignName);
   document.getElementById("assign-name").addEventListener('click', StartupAssist.saveCanva(start_up));
 
+};
+
+StartupAssist.clearFlash = function(){
+  var $flash_div = $(".flash");
+
+  $flash_div.text("");
 };
