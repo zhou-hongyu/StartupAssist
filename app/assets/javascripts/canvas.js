@@ -23,6 +23,7 @@ StartupAssist.showAllCanvas = function(callback){
 
   var $content_div = $("#canvas"),
       $all_canvas_div = $('<div class="all-canvas">'),
+      $all_canvas_ul = $('<ul class="list-inline">'),
       $create_canva_div = $('<div class="new-canvas">'),
       $new_canva_button = $('<button id="assign-name" class="btn btn-primary btn-lg">Create New Canva</button>')[0];
 
@@ -32,9 +33,12 @@ StartupAssist.showAllCanvas = function(callback){
   $new_canva_button.addEventListener('click', StartupAssist.clearFlash);
 
   for(i = 0; i < callback.length; i++){
+    var $li = $('<li>');
     canva_button_id = 'id="canva-' + callback[i].id + '"';
     $canva_show_button = $('<button class ="btn btn-primary btn-lg show-canva"' + canva_button_id + '>' + callback[i].business_name + '</button>');
-    $all_canvas_div.append($canva_show_button);
+    $li.append($canva_show_button);
+    $all_canvas_ul.append($li);
+    $all_canvas_div.append($all_canvas_ul);
   }
   $create_canva_div.append($new_canva_button);
   $content_div.append($all_canvas_div, $create_canva_div);
@@ -53,7 +57,6 @@ StartupAssist.assignName = function(){
   if (start_up !== null){
     document.getElementById("assign-name").innerHTML = start_up;
   }
-
   document.getElementById("assign-name").removeEventListener('click', StartupAssist.assignName);
   document.getElementById("assign-name").addEventListener('click', StartupAssist.saveCanva(start_up));
 
