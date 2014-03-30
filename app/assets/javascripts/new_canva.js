@@ -24,7 +24,7 @@ StartupAssist.getCanva = function(canva_id){
     StartupAssist.tagHandler(canva_id);
   });
 
-  StartupAssist.getTags(canva_id);
+  StartupAssist.getTags(canva_id  );
   StartupAssist.drawPanel();
 };
 

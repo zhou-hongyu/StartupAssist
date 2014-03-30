@@ -46,6 +46,7 @@ StartupAssist.showAllCanvas = function(callback){
   var $show_the_canva_button = $('.show-canva');
   $show_the_canva_button.click(function(event){
     StartupAssist.clearFlash();
+    current_canva_id = parseInt(event.target.id.split('-')[1]);
     StartupAssist.getCanva(parseInt(event.target.id.split('-')[1]));
   });
 };

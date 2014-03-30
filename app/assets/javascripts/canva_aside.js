@@ -1,6 +1,7 @@
 var StartupAssist = StartupAssist || {};
 
-var current_tag_id;
+var current_tag_id,
+    current_canva_id;
 
 StartupAssist.drawPanel = function(){
   var color_panel = d3.select('#canva-svg'),
@@ -49,8 +50,9 @@ StartupAssist.changeColor = function(d){
       color_array = ["#ecf0f1", "#2ecc71", "#9b59b6", "#e74c3c", "#3498db", "#f1c40f"];
 
   tag_svg.select('#new-tag-' + current_tag_id + ' rect')
-         .transition()
-         .style("fill", color_array[d]);
+         // .transition()
+         .style("fill", color_array[d])
+         .each('end', StartupAssist.updateTagInit(current_tag_id));
 };
 
 
@@ -62,7 +64,7 @@ StartupAssist.tagHandler = function(canva_id){
     data: {canva_id: canva_id},
   })
   .done(function(response) {
-    StartupAssist.drawTags(response);
+    StartupAssist.drawTags(response, response.canva_id);
     tag_index = response.id;
   })
   .fail(function() {
@@ -74,7 +76,6 @@ StartupAssist.tagHandler = function(canva_id){
 };
 
 StartupAssist.drawTags = function(callback, canva_id){
-
   var tag_width = 75,
       tag_height = 60;
   tag_svg = d3.select('#canva-svg');
@@ -83,7 +84,7 @@ StartupAssist.drawTags = function(callback, canva_id){
 
   // Append the rectangular
   tag_svg.append("g")
-         .attr('id', 'new-tag-' + callback.id +'')
+         .attr('id', 'new-tag-' + callback.id + '')
          .attr('class', 'tag')
          .append('rect')
            .attr('class', 'tag-rect')
@@ -97,6 +98,8 @@ StartupAssist.drawTags = function(callback, canva_id){
   // Append the text field to the tag.
 
   var tag_content = d3.select('#new-tag-' + callback.id + '');
+
+
 
   tag_content.append('text')
          .attr('class', 'tag-content')
@@ -149,7 +152,10 @@ StartupAssist.redrawTags = function(tags) {
              .attr('width', tag_width)
              .attr('onmousedown', 'StartupAssist.selectElement(event)')
              .attr('transform', tags[i].properties.rect_transform)
-             .style('fill', tags[i].properties.rect_style.slice(7, -1));
+             .style('fill', tags[i].properties.rect_style.slice(7, -1))
+             .on('click', function(event){
+               StartupAssist.selectElement(event);
+             });
 
     var tag_content = d3.select('#' + tags[i].properties.tag_id);
 
@@ -202,6 +208,7 @@ StartupAssist.selectElement = function(event){
     currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
   }
   selectElement.addEventListener('mouseup', StartupAssist.changeTagIndex(parseInt(event.target.parentElement.id.split('-')[2])));
+
   selectElement.addEventListener('mousemove', StartupAssist.moveElement);
   selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler);
   selectElement.addEventListener('mouseout', StartupAssist.mouseOutHandler);
@@ -239,6 +246,7 @@ StartupAssist.mouseOutHandler = function(event) {
     //selectElement = 0;
     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
     event.target.addEventListener('mousedown', StartupAssist.selectElement);
+    StartupAssist.updateTagInit(current_canva_id);
 
   }
     event.preventDefault();
@@ -250,6 +258,7 @@ StartupAssist.mouseUpHandler = function(event) {
     // selectElement = 0;
     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
     event.target.addEventListener('mousedown', StartupAssist.selectElement);
+    StartupAssist.updateTagInit(current_canva_id);
   }
     event.preventDefault();
     return false;
