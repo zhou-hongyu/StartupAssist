@@ -7,13 +7,18 @@ StartupAssist.getCanva = function(canva_id){
       $save_canva_div = $('<div id="save-canva">'),
       $save_canva_button = $('<button id="save-canva-button" class="btn btn-primary btn-lg">Save Canva</button>'),
       $create_tag_button = $('<button id="create-tag" class="btn btn-primary btn-lg">New Tag</button>'),
+      $add_contributor_button = $('<button id="add-contributor" class="btn btn-primary btn-lg">Add Contributor</button>'),
       $canva_svg = $('<svg id="canva-svg" width="1200" height="500" xmlns="http://www.w3.org/2000/svg">');
   $content_div.text("");
   $new_canva_div.append($canva_svg);
-  $save_canva_div.append($create_tag_button, $save_canva_button);
+  $save_canva_div.append($add_contributor_button, $create_tag_button, $save_canva_button);
   $content_div.append($new_canva_div, $save_canva_div);
 
   StartupAssist.drawCanva();
+
+  $add_contributor_button.click(function(){
+    StartupAssist.assignContributor(canva_id);
+  });
 
   $save_canva_button.click(function(){
     StartupAssist.updateTagInit(canva_id);
@@ -26,6 +31,25 @@ StartupAssist.getCanva = function(canva_id){
 
   StartupAssist.getTags(canva_id  );
   StartupAssist.drawPanel();
+};
+
+StartupAssist.assignContributor = function(canva_id){
+  var contributor = prompt("Please input the contributor's name:");
+  $.ajax({
+    url: 'canvas/' + canva_id + '',
+    type: 'PUT',
+    dataType: 'json',
+    data: { canva_id: canva_id, contributor: contributor },
+  })
+  .done(function(response) {
+    console.log(response);
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
 };
 
 StartupAssist.drawCanva = function(){
