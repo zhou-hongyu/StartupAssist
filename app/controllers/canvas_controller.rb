@@ -11,9 +11,9 @@ class CanvasController < ApplicationController
   def create
     @canva = Canva.create!(canva_params)
     @canva.save
-    if user_signed_in?
-      current_user.canvas << @canva
-    end
+    # if user_signed_in?
+    #   current_user.canvas << @canva
+    # end
     render json: @canva
   end
 
