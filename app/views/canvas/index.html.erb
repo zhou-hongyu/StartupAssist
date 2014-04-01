@@ -1,1 +1,22 @@
 <div id="canvas"></div>
+
+<script>
+  $(document).ready(function(){
+    $.ajax({
+      async: false,
+      url: '/canvas',
+      type: 'GET',
+      dataType: 'json',
+    })
+    .done(function(response) {
+      StartupAssist.showAllCanvas(response);
+
+    })
+    .fail(function() {
+      console.log("error");
+    })
+    .always(function() {
+      console.log("complete");
+    });
+  });
+</script>

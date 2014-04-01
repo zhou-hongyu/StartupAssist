@@ -3,8 +3,8 @@ class CanvasController < ApplicationController
     @canvas = current_user.canvas
 
     respond_to do |format|
-      format.html
       format.json { render json: @canvas }
+      format.html
     end
   end
 
