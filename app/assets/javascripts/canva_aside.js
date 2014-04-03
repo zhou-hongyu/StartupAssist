@@ -207,18 +207,19 @@ var selectElement = 0,
 StartupAssist.selectElement = function(event){
   selectContent = event.target.parentElement.getElementsByClassName('tag-content')[0];
   selectElement = event.target;
+  selectCircle = event.target.parentElement.getElementsByClassName('tag-delete')[0];
   currentX = event.clientX;
   currentY = event.clientY;
   currentTranslate = selectElement.getAttributeNS(null, "transform").slice(10, -1).split(', ');
   currentContentTranslate = selectContent.getAttributeNS(null, "transform").slice(10, -1).split(', ');
+  currentCircleTranslate = selectCircle.getAttributeNS(null, "transform").slice(10, -1).split(', ');
 
   for(i = 0; i < currentTranslate.length; i++ ){
     currentTranslate[i] = parseFloat(currentTranslate[i]);
+    currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
+    currentCircleTranslate[i] = parseFloat(currentCircleTranslate[i]);
   }
 
-  for(i = 0; i < currentContentTranslate.length; i++ ){
-    currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
-  }
   selectElement.addEventListener('mouseup', StartupAssist.changeTagIndex(parseInt(event.target.parentElement.id.split('-')[2])));
 
   selectElement.addEventListener('mousemove', StartupAssist.moveElement);
@@ -239,12 +240,16 @@ StartupAssist.moveElement = function(event) {
   currentContentTranslate[0] = parseInt(currentContentTranslate[0]) + parseInt(dx);
   currentContentTranslate[1] = parseInt(currentContentTranslate[1]) + parseInt(dy);
 
+  currentCircleTranslate[0] = parseInt(currentCircleTranslate[0]) + parseInt(dx);
+  currentCircleTranslate[1] = parseInt(currentCircleTranslate[1]) + parseInt(dy);
   newTranslate = "translate(" + currentTranslate.join(', ') + ")";
   newContentTranslate = "translate(" + currentContentTranslate.join(', ') + ")";
+  newCircleTranslate = "translate(" + currentCircleTranslate.join(', ') + ")";
+
   event.target.setAttributeNS(null, "transform", newTranslate);
-  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "transform", newTranslate);
-  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "x", "57.5");
-  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "y", "47.5");
+  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "transform", newContentTranslate);
+  event.target.parentElement.getElementsByClassName('tag-delete')[0].setAttributeNS(null, "transform", newCircleTranslate);
+
   currentX = event.clientX;
   currentY = event.clientY;
     event.preventDefault();
