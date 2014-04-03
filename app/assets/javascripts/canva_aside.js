@@ -102,18 +102,30 @@ StartupAssist.drawTags = function(callback, canva_id){
 
 
   tag_content.append('text')
-         .attr('class', 'tag-content')
-         .attr('x', 20)
-         .attr('y', 10)
-         .attr('width', 20)
-         .attr('transform', 'translate(1050, 395)')
-         .style('font-size', 12)
-         .style('font-family', '"Comic Sans MS", cursive, sans-serif')
-         .style('fill', 'black')
-         .style('stroke', 'none')
-         .style('text-anchor', 'middle')
-         .text('Contents')
-         .attr('onmousedown', 'StartupAssist.editText(event)');
+             .attr('class', 'tag-content')
+             .attr('x', 20)
+             .attr('y', 10)
+             .attr('width', 20)
+             .attr('transform', 'translate(1050, 395)')
+             .style('font-size', 12)
+             .style('font-family', '"Comic Sans MS", cursive, sans-serif')
+             .style('fill', 'black')
+             .style('stroke', 'none')
+             .style('text-anchor', 'middle')
+             .text('Contents')
+             .attr('onmousedown', 'StartupAssist.editText(event)');
+
+  tag_content.append('circle')
+             .attr('class', 'tag-delete')
+             .attr('r', 5)
+             .attr('cx', 20)
+             .attr('cy', 11)
+             .attr('transform', 'translate(1086, 357)')
+             .style('fill', 'black')
+             .style('stroke', '1px')
+             .style('opacity', 0.3)
+             .style('stroke-color', 'black');
+
 
   StartupAssist.updateTagInit(canva_id);
 };
