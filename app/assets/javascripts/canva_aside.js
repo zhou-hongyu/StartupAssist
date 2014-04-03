@@ -184,6 +184,17 @@ StartupAssist.redrawTags = function(tags) {
            .style('text-anchor', 'middle')
            .text(tags[i].properties.txt_inner)
            .attr('onmousedown', 'StartupAssist.editText(event)');
+
+    tag_content.append('circle')
+               .attr('class', 'tag-delete')
+               .attr('r', 5)
+               .attr('cx', tags[i].properties.circle_cx)
+               .attr('cy', tags[i].properties.circle_cy)
+               .attr('transform', tags[i].properties.circle_transform)
+               .style('fill', 'black')
+               .style('stroke', '1px')
+               .style('opacity', 0.3)
+               .style('stroke-color', 'black');
   }
 };
 
