@@ -124,7 +124,8 @@ StartupAssist.drawTags = function(callback, canva_id){
              .style('fill', 'black')
              .style('stroke', '1px')
              .style('opacity', 0.3)
-             .style('stroke-color', 'black');
+             .style('stroke-color', 'black')
+             .attr('onmousedown', 'StartupAssist.deleteTag(event)');
 
 
   StartupAssist.updateTagInit(canva_id);
@@ -194,8 +195,17 @@ StartupAssist.redrawTags = function(tags) {
                .style('fill', 'black')
                .style('stroke', '1px')
                .style('opacity', 0.3)
-               .style('stroke-color', 'black');
+               .style('stroke-color', 'black')
+               .attr('onmousedown', 'StartupAssist.deleteTagInit(event)');
   }
+};
+
+StartupAssist.deleteTagInit = function(event){
+  var circleElement = event.target;
+
+
+
+  debugger;
 };
 
 StartupAssist.editText = function(event){

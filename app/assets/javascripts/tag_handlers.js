@@ -56,3 +56,6 @@ StartupAssist.updateTag = function(tag, the_id){
     console.log("complete");
   });
 };
+
+
+StartupAssist.deleteTag = function(tag, the_id){};
