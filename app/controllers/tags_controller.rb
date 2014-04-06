@@ -13,6 +13,13 @@ class TagsController < ApplicationController
     render json: @tag
   end
 
+  def destroy
+    @tag = Tag.find(params[:tag_id])
+    @tag.destroy
+
+    render json: @tag
+  end
+
   private
 
   def tag_params

@@ -125,7 +125,7 @@ StartupAssist.drawTags = function(callback, canva_id){
              .style('stroke', '1px')
              .style('opacity', 0.3)
              .style('stroke-color', 'black')
-             .attr('onmousedown', 'StartupAssist.deleteTagInit(event)');
+             .attr('onmousedown', 'StartupAssist.deleteTag(event)');
 
 
   StartupAssist.updateTagInit(canva_id);
@@ -196,14 +196,32 @@ StartupAssist.redrawTags = function(tags) {
                .style('stroke', '1px')
                .style('opacity', 0.3)
                .style('stroke-color', 'black')
-               .attr('onmousedown', 'StartupAssist.deleteTagInit(event)');
+               .attr('onmousedown', 'StartupAssist.deleteTag(event)');
   }
 };
 
-StartupAssist.deleteTagInit = function(event){
-  var $delete_target = $('#' + event.target.parentElement.id);
+StartupAssist.deleteTag = function(event){
+  var $delete_target = $('#' + event.target.parentElement.id),
+      tag_id = parseInt(event.target.parentElement.id.split('-')[2]);
 
   $delete_target.fadeOut("slow");
+
+  $.ajax({
+    url: '/canvas/' + current_canva_id + '/tags/' + tag_id,
+    type: 'DELETE',
+    dataType: 'json',
+    data: { tag_id: tag_id },
+  })
+  .done(function() {
+    console.log("success");
+  })
+  .fail(function() {
+    console.log("error");
+  })
+  .always(function() {
+    console.log("complete");
+  });
+  
 };
 
 StartupAssist.editText = function(event){

@@ -29,6 +29,8 @@ class CanvasController < ApplicationController
     render json: @user
   end
 
+
+
   private
 
   def canva_params
