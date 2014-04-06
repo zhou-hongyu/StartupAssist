@@ -19,7 +19,6 @@ class CanvasController < ApplicationController
 
   def show
     @canva = Canva.find(params[:canva_id])
-
     render json: @canva.tags
   end
 
@@ -29,6 +28,8 @@ class CanvasController < ApplicationController
     @user.canvas << @canva
     render json: @user
   end
+
+
 
   private
 
