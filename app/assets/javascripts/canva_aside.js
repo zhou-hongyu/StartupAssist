@@ -92,7 +92,8 @@ StartupAssist.drawTags = function(callback, canva_id){
            .attr('y', 11)
            .attr('height', tag_height)
            .attr('width', tag_width)
-           .attr('onmousedown', 'StartupAssist.selectElement(event)')
+           .attr('onmousedown', 'StartupAssist.OnMouseDown')
+           .attr('onmouseup', 'StartupAssist.OnMouseUp')
            .attr('transform', 'translate(1011, 357)')
            .style('fill', 'f1c40f');
   // Append the text field to the tag.
@@ -163,7 +164,8 @@ StartupAssist.redrawTags = function(tags) {
              .attr('y', 11)
              .attr('height', tag_height)
              .attr('width', tag_width)
-             .attr('onmousedown', 'StartupAssist.selectElement(event)')
+             .attr('onmousedown', 'StartupAssist.OnMouseDown')
+             .attr('onmouseup', 'StartupAssist.OnMouseUp')
              .attr('transform', tags[i].properties.rect_transform)
              .style('fill', tags[i].properties.rect_style.slice(7, -1))
              .on('click', function(event){
@@ -221,7 +223,7 @@ StartupAssist.deleteTag = function(event){
   .always(function() {
     console.log("complete");
   });
-  
+
 };
 
 StartupAssist.editText = function(event){
@@ -233,89 +235,137 @@ StartupAssist.editText = function(event){
   }
 };
 
-var selectElement = 0,
-    selectContent = 0,
-    currentX = 0,
-    currentY = 0,
-    currentTranslate = 0,
-    currentContentTranslate = 0,
-    i = 0;
+// var selectElement = 0,
+//     selectContent = 0,
+//     currentX = 0,
+//     currentY = 0,
+//     currentTranslate = 0,
+//     currentContentTranslate = 0,
+//     i = 0;
 
-StartupAssist.selectElement = function(event){
-  selectContent = event.target.parentElement.getElementsByClassName('tag-content')[0];
-  selectElement = event.target;
-  selectCircle = event.target.parentElement.getElementsByClassName('tag-delete')[0];
-  currentX = event.clientX;
-  currentY = event.clientY;
-  currentTranslate = selectElement.getAttributeNS(null, "transform").slice(10, -1).split(', ');
-  currentContentTranslate = selectContent.getAttributeNS(null, "transform").slice(10, -1).split(', ');
-  currentCircleTranslate = selectCircle.getAttributeNS(null, "transform").slice(10, -1).split(', ');
+// StartupAssist.selectElement = function(event){
+//   selectContent = event.target.parentElement.getElementsByClassName('tag-content')[0];
+//   selectElement = event.target;
+//   selectCircle = event.target.parentElement.getElementsByClassName('tag-delete')[0];
+//   currentX = event.clientX;
+//   currentY = event.clientY;
+//   currentTranslate = selectElement.getAttributeNS(null, "transform").slice(10, -1).split(', ');
+//   currentContentTranslate = selectContent.getAttributeNS(null, "transform").slice(10, -1).split(', ');
+//   currentCircleTranslate = selectCircle.getAttributeNS(null, "transform").slice(10, -1).split(', ');
 
-  for(i = 0; i < currentTranslate.length; i++ ){
-    currentTranslate[i] = parseFloat(currentTranslate[i]);
-    currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
-    currentCircleTranslate[i] = parseFloat(currentCircleTranslate[i]);
+//   for(i = 0; i < currentTranslate.length; i++ ){
+//     currentTranslate[i] = parseFloat(currentTranslate[i]);
+//     currentContentTranslate[i] = parseFloat(currentContentTranslate[i]);
+//     currentCircleTranslate[i] = parseFloat(currentCircleTranslate[i]);
+//   }
+
+//   selectElement.addEventListener('mouseup', StartupAssist.changeTagIndex(parseInt(event.target.parentElement.id.split('-')[2])));
+
+//   selectElement.addEventListener('mousemove', StartupAssist.InitDragDrop);
+//   // selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler);
+//   // selectElement.addEventListener('mouseout', StartupAssist.mouseOutHandler);
+//   selectElement.removeEventListener('mousedown', StartupAssist.selectElement);
+//   event.preventDefault();
+//   return false;
+// };
+
+
+var _startX = 0,
+    _startY = 0,
+    _offsetX = 0,
+    _offsetY = 0,
+    _dragElement,
+    _oldZIndex = 0,
+    _debug = $('debug');
+
+StartupAssist.OnMouseDown = function(e) {
+  if (e === null) {
+    e = window.event;
+  }
+  var target = e.target !== null ? e.target : e.srcElement;
+      _debug.innerHTML = target.className == 'drag' ? 'draggable element clicked' : 'NON-draggable element clicked';
+
+  // for Firefox, left click == 0
+  if ((e.button === 1 && window.event !== null || e.button === 0) && target.className == 'drag') {
+  // grab the mouse position
+    _startX = e.clientX;
+    _startY = e.clientY;
+    // grab the clicked element's position
+    _offsetX = ExtractNumber(target.style.left);
+    _offsetY = ExtractNumber(target.style.top);
+    // bring the clicked element to the front while it is being dragged
+    _oldZIndex = target.style.zIndex;
+    target.style.zIndex = 10000;
+    // we need to access the element in OnMouseMove
+    _dragElement = target;
+
+    // tell our code to start moving the element with the mouse
+    document.onmousemove = StartupAssist.OnMouseMove;
+    // cancel out any text selections
+    document.body.focus();
+    // prevent text selection in IE
+    document.onselectstart = function () { return false; };
+    // prevent IE from trying to drag an image
+    target.ondragstart = function() { return false; };
+    // prevent text selection (except IE)
+    return false;
   }
 
-  selectElement.addEventListener('mouseup', StartupAssist.changeTagIndex(parseInt(event.target.parentElement.id.split('-')[2])));
-
-  selectElement.addEventListener('mousemove', StartupAssist.moveElement);
-  selectElement.addEventListener('mouseup', StartupAssist.mouseUpHandler);
-  selectElement.addEventListener('mouseout', StartupAssist.mouseOutHandler);
-  selectElement.removeEventListener('mousedown', StartupAssist.selectElement);
-  event.preventDefault();
-  return false;
+  StartupAssist.updateTagInit(current_canva_id);
 };
 
-StartupAssist.moveElement = function(event) {
-  dx = event.clientX - currentX;
-  dy = event.clientY - currentY;
 
-  currentTranslate[0] = parseInt(currentTranslate[0]) + parseInt(dx);
-  currentTranslate[1] = parseInt(currentTranslate[1]) + parseInt(dy);
-
-  currentContentTranslate[0] = parseInt(currentContentTranslate[0]) + parseInt(dx);
-  currentContentTranslate[1] = parseInt(currentContentTranslate[1]) + parseInt(dy);
-
-  currentCircleTranslate[0] = parseInt(currentCircleTranslate[0]) + parseInt(dx);
-  currentCircleTranslate[1] = parseInt(currentCircleTranslate[1]) + parseInt(dy);
-  newTranslate = "translate(" + currentTranslate.join(', ') + ")";
-  newContentTranslate = "translate(" + currentContentTranslate.join(', ') + ")";
-  newCircleTranslate = "translate(" + currentCircleTranslate.join(', ') + ")";
-
-  event.target.setAttributeNS(null, "transform", newTranslate);
-  event.target.parentElement.getElementsByClassName('tag-content')[0].setAttributeNS(null, "transform", newContentTranslate);
-  event.target.parentElement.getElementsByClassName('tag-delete')[0].setAttributeNS(null, "transform", newCircleTranslate);
-
-  currentX = event.clientX;
-  currentY = event.clientY;
-    event.preventDefault();
-    return false;
-
-};
-
-StartupAssist.mouseOutHandler = function(event) {
-
-  if( selectElement !== 0 ){
-    //selectElement = 0;
-    event.target.removeEventListener('mousemove', StartupAssist.moveElement);
-    event.target.addEventListener('mousedown', StartupAssist.selectElement);
-    StartupAssist.updateTagInit(current_canva_id);
-
+StartupAssist.OnMouseMove = function(e) {
+  if (e === null) {
+    e = window.event;
   }
-    event.preventDefault();
-    return false;
+
+  // this is the actual "drag code"
+  _dragElement.style.left = (_offsetX + e.clientX - _startX) + 'px';
+  _dragElement.style.top = (_offsetY + e.clientY - _startY) + 'px';
+
+  _debug.innerHTML = '(' + _dragElement.style.left + ', ' + _dragElement.style.top + ')';
 };
 
-StartupAssist.mouseUpHandler = function(event) {
-  if( selectElement !== 0 ){
-    // selectElement = 0;
-    event.target.removeEventListener('mousemove', StartupAssist.moveElement);
-    event.target.addEventListener('mousedown', StartupAssist.selectElement);
-    StartupAssist.updateTagInit(current_canva_id);
+StartupAssist.OnMouseUp = function(e) {
+  if (_dragElement !== null) {
+    _dragElement.style.zIndex = _oldZIndex;
+
+    // we're done with these events until the next OnMouseDown
+    document.onmousemove = null;
+    document.onselectstart = null;
+    _dragElement.ondragstart = null;
+
+    // this is how we know we're not dragging
+    _dragElement = null;
+    _debug.innerHTML = 'mouse up';
   }
-    event.preventDefault();
-    return false;
 };
+
+
+
+// StartupAssist.mouseOutHandler = function(event) {
+
+//   if( selectElement !== 0 ){
+//     //selectElement = 0;
+//     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
+//     event.target.addEventListener('mousedown', StartupAssist.selectElement);
+//     StartupAssist.updateTagInit(current_canva_id);
+
+//   }
+//     event.preventDefault();
+//     return false;
+// };
+
+// StartupAssist.mouseUpHandler = function(event) {
+//   if( selectElement !== 0 ){
+//     // selectElement = 0;
+//     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
+//     event.target.addEventListener('mousedown', StartupAssist.selectElement);
+//     StartupAssist.updateTagInit(current_canva_id);
+//   }
+//     event.preventDefault();
+//     return false;
+// };
 
 
