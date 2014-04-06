@@ -299,7 +299,7 @@ StartupAssist.OnMouseDown = function(e) {
     // tell our code to start moving the element with the mouse
     target.onmousemove = StartupAssist.OnMouseMove(event);
     // cancel out any text selections
-    target.body.focus();
+    // target.body.focus();
     // prevent text selection in IE
     target.onselectstart = function () { return false; };
     // prevent IE from trying to drag an image
@@ -318,8 +318,11 @@ StartupAssist.OnMouseMove = function(e) {
   }
 
   // this is the actual "drag code"
-  _startX = (_offsetX + e.clientX - _startX);
-  _startY = (_offsetY + e.clientY - _startY);
+  _offsetX = (_offsetX + e.clientX - _startX);
+  _offsetY = (_offsetY + e.clientY - _startY);
+
+  e.target.setAttributeNS(null, 'x', _offsetX);
+  e.target.setAttributeNS(null, 'y', _offsetY);
   _debug.innerHTML = '(' + _dragElement.style.left + ', ' + _dragElement.style.top + ')';
 };
 
