@@ -92,10 +92,11 @@ StartupAssist.drawTags = function(callback, canva_id){
            .attr('y', 11)
            .attr('height', tag_height)
            .attr('width', tag_width)
-           .attr('onmousedown', 'StartupAssist.OnMouseDown')
-           .attr('onmouseup', 'StartupAssist.OnMouseUp')
+           .attr('onmousedown', 'StartupAssist.OnMouseDown(event)')
+           .attr('onmouseup', 'StartupAssist.OnMouseUp(event)')
            .attr('transform', 'translate(1011, 357)')
-           .style('fill', 'f1c40f');
+           .style('fill', 'f1c40f')
+           .style('left', '200px');
   // Append the text field to the tag.
 
   var tag_content = d3.select('#new-tag-' + callback.id + '');
@@ -164,13 +165,13 @@ StartupAssist.redrawTags = function(tags) {
              .attr('y', 11)
              .attr('height', tag_height)
              .attr('width', tag_width)
-             .attr('onmousedown', 'StartupAssist.OnMouseDown')
-             .attr('onmouseup', 'StartupAssist.OnMouseUp')
+             .attr('onmousedown', 'StartupAssist.OnMouseDown(event)')
+             .attr('onmouseup', 'StartupAssist.OnMouseUp(event)')
              .attr('transform', tags[i].properties.rect_transform)
-             .style('fill', tags[i].properties.rect_style.slice(7, -1))
-             .on('click', function(event){
-               StartupAssist.selectElement(event);
-             });
+             .style('fill', tags[i].properties.rect_style.slice(7, -1));
+             // .on('click', function(event){
+             //   StartupAssist.selectElement(event);
+             // });
 
     var tag_content = d3.select('#' + tags[i].properties.tag_id);
 
@@ -279,32 +280,28 @@ var _startX = 0,
     _debug = $('debug');
 
 StartupAssist.OnMouseDown = function(e) {
-  if (e === null) {
-    e = window.event;
-  }
-  var target = e.target !== null ? e.target : e.srcElement;
-      _debug.innerHTML = target.className == 'drag' ? 'draggable element clicked' : 'NON-draggable element clicked';
 
-  // for Firefox, left click == 0
-  if ((e.button === 1 && window.event !== null || e.button === 0) && target.className == 'drag') {
+  var target = e.target !== null ? e.target : e.srcElement;
+      // _debug.innerHTML = target.className == 'drag' ? 'draggable element clicked' : 'NON-draggable element clicked';
+  // for Chrom & Firefox, left click == 0, for IE left click == 1
+  if ((e.button === 0 && window.event !== null || e.button === 0) && target.getAttributeNS(null, 'class') === 'tag-rect') {
   // grab the mouse position
     _startX = e.clientX;
     _startY = e.clientY;
     // grab the clicked element's position
-    _offsetX = ExtractNumber(target.style.left);
-    _offsetY = ExtractNumber(target.style.top);
+    _offsetX = parseInt(target.getAttributeNS(null, 'x'));
+    _offsetY = parseInt(target.getAttributeNS(null, 'y'));
     // bring the clicked element to the front while it is being dragged
     _oldZIndex = target.style.zIndex;
     target.style.zIndex = 10000;
     // we need to access the element in OnMouseMove
     _dragElement = target;
-
     // tell our code to start moving the element with the mouse
-    document.onmousemove = StartupAssist.OnMouseMove;
+    target.onmousemove = StartupAssist.OnMouseMove(event);
     // cancel out any text selections
-    document.body.focus();
+    target.body.focus();
     // prevent text selection in IE
-    document.onselectstart = function () { return false; };
+    target.onselectstart = function () { return false; };
     // prevent IE from trying to drag an image
     target.ondragstart = function() { return false; };
     // prevent text selection (except IE)
@@ -321,9 +318,8 @@ StartupAssist.OnMouseMove = function(e) {
   }
 
   // this is the actual "drag code"
-  _dragElement.style.left = (_offsetX + e.clientX - _startX) + 'px';
-  _dragElement.style.top = (_offsetY + e.clientY - _startY) + 'px';
-
+  _startX = (_offsetX + e.clientX - _startX);
+  _startY = (_offsetY + e.clientY - _startY);
   _debug.innerHTML = '(' + _dragElement.style.left + ', ' + _dragElement.style.top + ')';
 };
 
@@ -340,6 +336,17 @@ StartupAssist.OnMouseUp = function(e) {
     _dragElement = null;
     _debug.innerHTML = 'mouse up';
   }
+};
+
+StartupAssist.ExtractNumber = function(value) {
+  var n = parseInt(value);
+
+  return n === null || isNaN(n) ? 0 : n;
+};
+
+// this is simply a shortcut for the eyes and fingers
+StartupAssist.$ = function(id) {
+  return document.getElementById(id);
 };
 
 
