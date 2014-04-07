@@ -23,6 +23,7 @@ StartupAssist.getCanva = function(canva_id){
   $save_canva_button.click(function(){
     StartupAssist.updateTagInit(canva_id);
     StartupAssist.updateCanva();
+    clearInterval(nInterval);
   });
 
   $create_tag_button.click(function(){
@@ -30,7 +31,7 @@ StartupAssist.getCanva = function(canva_id){
   });
 
   StartupAssist.getTags(canva_id);
-  setInterval(StartupAssist.getTags, 5000, canva_id);
+  var nInterval = setInterval(StartupAssist.getTags, 5000, canva_id);
   StartupAssist.drawPanel();
 };
 
