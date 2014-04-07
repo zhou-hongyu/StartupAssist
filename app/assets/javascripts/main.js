@@ -17,4 +17,5 @@ StartupAssist.buildHomepage = function(){
   $registration_div.append($registration_memo, $registration_p);
   $img_div.append($registration_div);
   $content_div.append($img_div);
+
 };

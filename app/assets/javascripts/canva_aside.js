@@ -131,7 +131,9 @@ StartupAssist.drawTags = function(callback, canva_id){
   StartupAssist.updateTagInit(canva_id);
 };
 
+
 StartupAssist.getTags = function(canva_id){
+  console.log("getting!");
   $.ajax({
     url: '/canvas/' + canva_id ,
     type: 'GET',
@@ -151,7 +153,9 @@ StartupAssist.getTags = function(canva_id){
 
 StartupAssist.redrawTags = function(tags) {
   var tag_width = 75,
-      tag_height = 60;
+      tag_height = 60,
+      $tags = $('.tag');
+  $tags.remove();
   tag_svg = d3.select('#canva-svg');
   for(i = 0; i < tags.length; i++) {
     tag_svg.append("g")
