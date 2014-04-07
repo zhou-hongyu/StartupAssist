@@ -239,6 +239,7 @@ var selectElement = 0,
     currentY = 0,
     currentTranslate = 0,
     currentContentTranslate = 0,
+    currentCircleTranslate = 0,
     i = 0;
 
 StartupAssist.selectElement = function(event){
@@ -247,6 +248,8 @@ StartupAssist.selectElement = function(event){
   selectCircle = event.target.parentElement.getElementsByClassName('tag-delete')[0];
   currentX = event.clientX;
   currentY = event.clientY;
+  attrX = selectElement.getAttributeNS(null, 'x');
+  attrY = selectElement.getAttributeNS(null, 'y');
   currentTranslate = selectElement.getAttributeNS(null, "transform").slice(10, -1).split(', ');
   currentContentTranslate = selectContent.getAttributeNS(null, "transform").slice(10, -1).split(', ');
   currentCircleTranslate = selectCircle.getAttributeNS(null, "transform").slice(10, -1).split(', ');
