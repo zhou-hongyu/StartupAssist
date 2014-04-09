@@ -225,16 +225,17 @@ StartupAssist.deleteTag = function(event){
   .always(function() {
     console.log("complete");
   });
-  
+
 };
 
 StartupAssist.editText = function(event){
   var textElement = event.target,
-      editedText = prompt("Edit texual contents:", textElement.firstChild.data);
+      editedText = prompt("Edit contents:", textElement.firstChild.data);
 
   if( editedText !== null){
     textElement.firstChild.data = editedText;
   }
+  StartupAssist.updateTagInit(current_canva_id);
 };
 
 var selectElement = 0,
