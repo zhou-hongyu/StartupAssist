@@ -1,5 +1,5 @@
-require 'spec_helper'
+# require 'spec_helper'
 
-describe WelcomeController do
+# describe WelcomeController do
 
-end
+# end
