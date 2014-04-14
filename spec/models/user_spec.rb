@@ -1,5 +1,12 @@
 require 'spec_helper'
 
 describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'association' do
+    it {should have_and_belong_to_many :canvas}
+  end
+
+  describe 'validation' do
+    it {should validate_presence_of(:email)}
+    it {should validate_presence_of(:password)}
+  end
 end
