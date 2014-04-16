@@ -39,7 +39,6 @@ StartupAssist.updateTagInit = function(canva_id){
 };
 
 StartupAssist.updateTag = function(tag, the_id){
-  debugger;
   var tag_id = parseInt(tag.id.split('-')[2]);
   $.ajax({
     url: '/canvas/' + the_id + '/tags/' + tag_id,

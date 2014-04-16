@@ -8,7 +8,6 @@ class TagsController < ApplicationController
   end
 
   def update
-    binding.pry
     @tag = Tag.find(params[:tag_id_int])
     @tag.update!(tag_params)
     render json: @tag

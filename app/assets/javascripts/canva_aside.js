@@ -141,6 +141,7 @@ StartupAssist.getTags = function(canva_id){
     data: { canva_id: canva_id },
   })
   .done(function(response) {
+    debugger;
     console.log(response);
     StartupAssist.redrawTags(response);
   })
@@ -169,7 +170,7 @@ StartupAssist.redrawTags = function(tags) {
              .attr('width', tag_width)
              .attr('onmousedown', 'StartupAssist.selectElement(event)')
              .attr('transform', tags[i].properties.rect_transform)
-             .style('fill', tags[i].properties.rect_style.slice(7, -1))
+             .style('fill', tags[i].properties.rect_style.slice(6, -1))
              .on('click', function(event){
                StartupAssist.selectElement(event);
              });
@@ -202,6 +203,7 @@ StartupAssist.redrawTags = function(tags) {
                .style('stroke-color', 'black')
                .attr('onmousedown', 'StartupAssist.deleteTag(event)');
   }
+  debugger;
 };
 
 StartupAssist.deleteTag = function(event){
