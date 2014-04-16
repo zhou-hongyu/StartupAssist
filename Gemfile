@@ -52,5 +52,3 @@ gem 'pony'
 gem 'sendgrid' # this is the gem that lets you send email
 gem 'foreman', require: false
 gem 'redis'
-gem 'resque', '~> 2.0.0.pre.1', github: 'resque/resque'
-
