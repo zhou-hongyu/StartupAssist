@@ -141,7 +141,6 @@ StartupAssist.getTags = function(canva_id){
     data: { canva_id: canva_id },
   })
   .done(function(response) {
-    debugger;
     console.log(response);
     StartupAssist.redrawTags(response);
   })
@@ -203,7 +202,6 @@ StartupAssist.redrawTags = function(tags) {
                .style('stroke-color', 'black')
                .attr('onmousedown', 'StartupAssist.deleteTag(event)');
   }
-  debugger;
 };
 
 StartupAssist.deleteTag = function(event){
@@ -250,6 +248,7 @@ var selectElement = 0,
     i = 0;
 
 StartupAssist.selectElement = function(event){
+  clearInterval(nInterval);
   selectContent = event.target.parentElement.getElementsByClassName('tag-content')[0];
   selectElement = event.target;
   selectCircle = event.target.parentElement.getElementsByClassName('tag-delete')[0];
@@ -305,9 +304,10 @@ StartupAssist.moveElement = function(event) {
 };
 
 StartupAssist.mouseOutHandler = function(event) {
+  nInterval = setInterval(StartupAssist.getTags, 3000, current_canva_id);
 
   if( selectElement !== 0 ){
-    //selectElement = 0;
+    selectElement = 0;
     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
     event.target.addEventListener('mousedown', StartupAssist.selectElement);
     StartupAssist.updateTagInit(current_canva_id);
@@ -318,8 +318,9 @@ StartupAssist.mouseOutHandler = function(event) {
 };
 
 StartupAssist.mouseUpHandler = function(event) {
+  nInterval = setInterval(StartupAssist.getTags, 3000, current_canva_id);
   if( selectElement !== 0 ){
-    // selectElement = 0;
+    selectElement = 0;
     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
     event.target.addEventListener('mousedown', StartupAssist.selectElement);
     StartupAssist.updateTagInit(current_canva_id);

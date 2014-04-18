@@ -1,5 +1,5 @@
 var StartupAssist = StartupAssist || {};
-
+var nInterval = null;
 
 StartupAssist.getCanva = function(canva_id){
   var $content_div = $('#canvas'),
@@ -31,7 +31,7 @@ StartupAssist.getCanva = function(canva_id){
   });
 
   StartupAssist.getTags(canva_id);
-  var nInterval = setInterval(StartupAssist.getTags, 5000, canva_id);
+  nInterval = setInterval(StartupAssist.getTags, 3000, canva_id);
   StartupAssist.drawPanel();
 };
 
