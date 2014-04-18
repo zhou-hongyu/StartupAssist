@@ -169,10 +169,7 @@ StartupAssist.redrawTags = function(tags) {
              .attr('width', tag_width)
              .attr('onmousedown', 'StartupAssist.selectElement(event)')
              .attr('transform', tags[i].properties.rect_transform)
-             .style('fill', tags[i].properties.rect_style.slice(6, -1))
-             .on('click', function(event){
-               StartupAssist.selectElement(event);
-             });
+             .style('fill', tags[i].properties.rect_style.slice(6, -1));
 
     var tag_content = d3.select('#' + tags[i].properties.tag_id);
 
@@ -304,9 +301,9 @@ StartupAssist.moveElement = function(event) {
 };
 
 StartupAssist.mouseOutHandler = function(event) {
-  nInterval = setInterval(StartupAssist.getTags, 3000, current_canva_id);
-
+  console.log("out");
   if( selectElement !== 0 ){
+    nInterval = setInterval(StartupAssist.getTags, 3000, current_canva_id);
     selectElement = 0;
     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
     event.target.addEventListener('mousedown', StartupAssist.selectElement);
@@ -318,15 +315,15 @@ StartupAssist.mouseOutHandler = function(event) {
 };
 
 StartupAssist.mouseUpHandler = function(event) {
-  nInterval = setInterval(StartupAssist.getTags, 3000, current_canva_id);
   if( selectElement !== 0 ){
+    nInterval = setInterval(StartupAssist.getTags, 3000, current_canva_id);
     selectElement = 0;
     event.target.removeEventListener('mousemove', StartupAssist.moveElement);
     event.target.addEventListener('mousedown', StartupAssist.selectElement);
     StartupAssist.updateTagInit(current_canva_id);
   }
-    event.preventDefault();
-    return false;
+  event.preventDefault();
+  return false;
 };
 
 
